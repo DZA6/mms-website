@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Order — Memorial Media Services{% endblock %}
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card" style="max-width:500px;">
+        <h1>Complete Your Order</h1>
+        <p class="auth-subtitle">{{ tier_name }} — ${{ price }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <p style="color:var(--text-light);margin-bottom:1.5rem;">
+                You'll get a custom HD tribute slideshow with music plus a matching memorial flyer PDF — all delivered digitally.
+            </p>
+            <div class="form-group">
+                <label for="notes">Special Requests (optional)</label>
+                <textarea name="notes" id="notes" rows="3" placeholder="Preferred song, photo order, specific dates, etc."></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Continue to Payment →</button>
+        </form>
+        <p class="auth-alt"><a href="{% url 'home' %}#pricing">← Change Plan</a></p>
+    </div>
+</div>
+{% endblock %}

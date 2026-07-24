@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Pricing — Memorial Media Services{% endblock %}
+{% block content %}
+<section class="pricing" id="pricing" style="padding-top:120px;">
+    <div class="container">
+        <h2 class="section-title">Simple Pricing</h2>
+        <p class="section-subtitle">Everything you need in one package. Includes unlimited revisions.</p>
+        <div class="pricing-grid" style="grid-template-columns:minmax(300px,450px);justify-content:center;">
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <h3>Tribute Package</h3>
+                <div class="price">$149 <span>one-time</span></div>
+                <ul class="pricing-features">
+                    <li>HD tribute slideshow (3–5 min)</li>
+                    <li>Custom licensed music</li>
+                    <li>Unlimited photo revisions</li>
+                    <li>Digital download link</li>
+                    <li>Shareable online tribute page</li>
+                    <li>Custom memorial flyer (PDF)</li>
+                    <li>Photo enhancement included</li>
+                </ul>
+                <a href="{% url 'create_order' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Select Plan</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

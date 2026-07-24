@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Upload Photos — Memorial Media Services{% endblock %}
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Upload Photos</h1>
+        <p class="auth-subtitle">Select multiple photos at once for your tribute slideshow.</p>
+        {% if photo_count is not None %}
+            <p style="text-align:center;font-size:0.85rem;color:var(--text-light);margin-bottom:1rem;">
+                {{ photo_count }} of {{ MAX_PHOTOS }} photos uploaded
+                {% if photo_count >= MAX_PHOTOS %}
+                    <span style="color:#d32f2f;font-weight:600;"> — limit reached</span>
+                {% endif %}
+            </p>
+            {% if photo_count > 0 %}
+            <div style="background:var(--cream);padding:0.8rem;border-radius:8px;margin-bottom:1.5rem;text-align:center;">
+                <p style="font-size:0.85rem;color:var(--text-light);">
+                    You have <strong>{{ photo_count }}</strong> photo(s) uploaded.
+                    <a href="{% url 'dashboard' %}" style="color:var(--gold);">View in Dashboard</a>
+                </p>
+            </div>
+            {% endif %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.errors %}
+                <ul class="errorlist">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <div class="form-group">
+                <label for="id_title">Photo Set Name</label>
+                <input type="text" name="title" id="id_title" maxlength="100" required placeholder="e.g. Mom's Celebration of Life">
+                <span style="font-size:0.8rem;color:var(--text-light);">This name will be applied to all photos in this batch.</span>
+            </div>
+            <div class="form-group">
+                <label for="id_images">Choose Photos</label>
+                <input type="file" name="images" id="id_images" accept="image/*" multiple required
+                       style="padding:0.5rem 0;"
+                       onchange="document.getElementById('file-count').textContent = this.files.length + ' file(s) selected'">
+                <div id="file-count" style="font-size:0.85rem;color:var(--sage);margin-top:0.3rem;">No files selected</div>
+                <span style="font-size:0.8rem;color:var(--text-light);">Select multiple at once. JPG, PNG accepted. Up to {{ MAX_PHOTOS }} photos total.</span>
+            </div>
+            <button type="submit" class="submit-btn"
+                    {% if photo_count >= MAX_PHOTOS %}disabled style="opacity:0.5;cursor:not-allowed;"{% endif %}>
+                Upload Photos →
+            </button>
+        </form>
+        <p class="auth-alt"><a href="{% url 'dashboard' %}">← Back to Dashboard</a></p>
+    </div>
+</div>
+{% endblock %}

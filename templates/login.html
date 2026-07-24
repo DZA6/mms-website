@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Log In — Memorial Media Services{% endblock %}
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Welcome Back</h1>
+        <p class="auth-subtitle">Log in to manage your tributes and orders.</p>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                <ul class="errorlist">
+                    <li>Invalid username or password. Please try again.</li>
+                </ul>
+            {% endif %}
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" required>
+            </div>
+            <button type="submit" class="submit-btn">Log In</button>
+        </form>
+        <p class="auth-alt">Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+    </div>
+</div>
+{% endblock %}

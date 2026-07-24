@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Memorial Media Services — Tribute Slideshows & Memorial Flyers{% endblock %}</title>
+    <meta name="description" content="Beautiful tribute slideshows and printed memorial flyers. We turn your photos into lasting tributes with compassion and care.">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕊️</text></svg>">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'images/mms-logo.png' %}" alt="Memorial Media Services" style="height:38px;display:block;">
+        </a>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}#how-it-works">How It Works</a></li>
+            <li><a href="{% url 'home' %}#pricing">Pricing</a></li>
+            <li><a href="{% url 'home' %}#gallery">Gallery</a></li>
+            <li><a href="{% url 'home' %}#contact">Contact</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li>
+                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-cta" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:var(--text)!important;">Log Out</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Log In</a></li>
+                <li><a href="{% url 'signup' %}" class="nav-cta">Get Started</a></li>
+            {% endif %}
+        </ul>
+        <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>
+                    <img src="{% static 'images/mms-logo.png' %}" alt="Memorial Media Services" style="height:32px;display:block;filter:brightness(0) invert(1);">
+                </h3>
+                <p>Turning your cherished photos into beautiful tribute slideshows and memorial keepsakes. Serving families with compassion and care.</p>
+            </div>
+            <div>
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}#pricing">Tribute Slideshow + Flyer</a></li>
+                    <li><a href="{% url 'home' %}#gallery">Sample Gallery</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}#how-it-works">How It Works</a></li>
+                    <li><a href="{% url 'home' %}#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}#contact">Get In Touch</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {% now "Y" %} Memorial Media Services. Crafted with care.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle — same as onclick on the button
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function(e) {
+            // Only handle if the inline onclick somehow didn't fire
+            if (e.isTrusted) {
+                document.querySelector('.nav-links')?.classList.toggle('show');
+            }
+        });
+    </script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

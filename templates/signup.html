@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up — Memorial Media Services{% endblock %}
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Get Started</h1>
+        <p class="auth-subtitle">Create your account to begin your tribute.</p>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                <ul class="errorlist">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username" maxlength="150" required autofocus>
+                <span class="helptext" style="font-size:0.8rem;color:var(--text-light);">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password</label>
+                <input type="password" name="password1" id="id_password1" required>
+            </div>
+            <div class="form-group">
+                <label for="id_password2">Confirm Password</label>
+                <input type="password" name="password2" id="id_password2" required>
+            </div>
+            <button type="submit" class="submit-btn">Create Account</button>
+        </form>
+        <p class="auth-alt">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Memorial Media Services — Beautiful Tribute Slideshows & Flyers{% endblock %}
+
+{% block content %}
+<!-- Trust Bar -->
+<div class="trust-bar">
+    ★ Serving families with compassion &nbsp;·&nbsp; <span>FREE 2-day shipping</span> on print orders over $100 &nbsp;·&nbsp; Unlimited revisions
+</div>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <div class="hero-badge">★ Trusted by Families Nationwide</div>
+            <h1>Turn Memories Into <em>Lasting Tributes</em></h1>
+            <p>We craft beautiful tribute slideshows and matching memorial flyers from your photos. All digital — delivered to your inbox, ready to share.</p>
+            <div class="hero-buttons">
+                <a href="{% url 'signup' %}" class="btn btn-primary">Get Started →</a>
+                <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
+                <a href="#contact" class="btn btn-secondary" style="border-color:var(--gold);color:var(--gold);">Request Consultation</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card">
+                <video controls style="width:100%;border-radius:12px;max-height:220px;background:#000;" poster="{% static 'images/mms-logo.png' %}">
+                    <source src="{{ MEDIA_URL }}videos/promo.mp4" type="video/mp4">
+                </video>
+                <div class="mock-rating">★★★★★</div>
+                <h3>See Our Work in Action</h3>
+                <p>Professional tribute slideshows and memorial flyers — crafted with care, delivered with speed.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Proof Bar -->
+<section class="social-proof">
+    <div class="container">
+        <p class="label">Trusted by Families Across the Country</p>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">500<span>+</span></div>
+                <div class="stat-label">Tributes Created</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50<span>+</span></div>
+                <div class="stat-label">5-Star Reviews</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">99<span>%</span></div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">48<span>hr</span></div>
+                <div class="stat-label">Avg. Turnaround</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works" id="how-it-works">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Three simple steps to create a lasting tribute for your loved one. We handle everything so you can focus on what matters.</p>
+        <div class="steps">
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <h3>Upload Your Photos</h3>
+                <p>Share your favorite photos through our secure portal. We accept JPG and PNG — and we'll enhance them at no extra cost.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <h3>We Craft the Tribute</h3>
+                <p>Our designers create a cinematic HD slideshow with licensed music and a matching memorial flyer PDF. Preview and request unlimited revisions.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <h3>Receive & Share</h3>
+                <p>We deliver your HD video and flyer PDF directly to your inbox. Share the link with family near and far, or download and print locally.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing" id="pricing">
+    <div class="container">
+        <h2 class="section-title">Simple, Transparent Pricing</h2>
+        <p class="section-subtitle">No hidden fees. No subscriptions. Unlimited revisions.</p>
+        <div class="pricing-grid" style="grid-template-columns:minmax(300px,450px);justify-content:center;">
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Everything Included</div>
+                <p class="pricing-tag">Tribute Video + Memorial Flyer</p>
+                <h3>Tribute Package</h3>
+                <div class="price">$149 <span>one-time</span></div>
+                <p class="price-note">Perfect for services, online sharing & keepsakes</p>
+                <ul class="pricing-features">
+                    <li>HD tribute slideshow (3–5 min)</li>
+                    <li>Custom licensed music</li>
+                    <li>Custom memorial flyer design (PDF)</li>
+                    <li>Unlimited photo & design revisions</li>
+                    <li>Digital download link + tribute page</li>
+                    <li>Photo enhancement included</li>
+                    <li>PDF flyer — print at home or at a local shop</li>
+                </ul>
+                <a href="{% url 'create_order' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Choose Your Package</a>
+            </div>
+        </div>
+
+        <!-- Satisfaction Guarantee -->
+        <div class="guarantee-banner">
+            <p>🛡️ <strong>Love It or We'll Make It Right.</strong> We're not happy until you are. If you don't love your tribute, we'll revise it — no questions asked.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery -->
+<section class="gallery" id="gallery">
+    <div class="container">
+        <h2 class="section-title">Sample Gallery</h2>
+        <p class="section-subtitle">A glimpse at the tributes and flyers we've created for families like yours.</p>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <video style="width:100%;height:100%;object-fit:cover;" muted loop
+                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
+                    <source src="{{ MEDIA_URL }}videos/promo.mp4" type="video/mp4">
+                </video>
+                <div class="gallery-overlay">
+                    <strong>Memorial Media Services</strong>
+                    <p>Promotional tribute showcase</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <a href="{{ MEDIA_URL }}flyers/A4_Flyer_Funeral_Floral.pdf" target="_blank">
+                    <div class="placeholder">📄</div>
+                    <div class="gallery-overlay">
+                        <strong>Memorial Flyer — Floral Design</strong>
+                        <p>A4 funeral flyer template — view PDF</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item">
+                <a href="{{ MEDIA_URL }}flyers/A3_Funeral_Graphic_Pack_Main.pdf" target="_blank">
+                    <div class="placeholder">📄</div>
+                    <div class="gallery-overlay">
+                        <strong>Funeral Graphic Pack</strong>
+                        <p>A3 multi-page design — view PDF</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder">📄</div>
+                <div class="gallery-overlay">
+                    <strong>Premium Prayer Card</strong>
+                    <p>Double-sided, premium stock</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder">📄</div>
+                <div class="gallery-overlay">
+                    <strong>Premium Prayer Card</strong>
+                    <p>Double-sided, premium stock</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder">📹</div>
+                <div class="gallery-overlay">
+                    <strong>Celebration of Life</strong>
+                    <p>Soft transitions, ambient music</p>
+                </div>
+            </div>
+        </div>
+        <div class="gallery-cta">
+            <a href="{% url 'signup' %}" class="btn btn-primary">Start Your Tribute →</a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials">
+    <div class="container">
+        <h2 class="section-title">What Families Say</h2>
+        <p class="section-subtitle">Kind words from those we've had the privilege to serve.</p>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <blockquote>"The slideshow brought everyone to tears — in the best way. Having both the video and the flyer PDF meant we could print extras locally whenever we needed. The turnaround was incredible."</blockquote>
+                <cite>— Sarah M. ★ Verified Customer</cite>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <blockquote>"I didn't have time to design anything myself. They took my photos and created something far more beautiful than I could have imagined. Delivered in 48 hours. I can't thank them enough."</blockquote>
+                <cite>— David L. ★ Verified Customer</cite>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <blockquote>"The memorial flyer design was absolutely stunning. We printed copies at our local print shop and they came out perfect. The whole process was so easy."</blockquote>
+                <cite>— Maria R. ★ Verified Customer</cite>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <blockquote>"From upload to delivery in under 3 days. The team kept me updated the entire time. The slideshow was played at the service and everyone asked who made it."</blockquote>
+                <cite>— James T. ★ Verified Customer</cite>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Everything you need to know about our service.</p>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>How long does it take?</h3>
+                <p>Most tributes are delivered within 48 hours of photo submission. Rush orders (same-day) are available for an additional fee — just contact us.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What if I don't like the design?</h3>
+                <p>We offer unlimited revisions until you're completely satisfied. Your happiness is guaranteed — we'll revise the slideshow or flyer as many times as needed.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I receive my slideshow and flyer?</h3>
+                <p>Both are delivered digitally — you get a private download link for the HD video and a PDF of the memorial flyer. Share the link, download, or print the flyer at home or a local print shop.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Can I print the flyer myself?</h3>
+                <p>Absolutely. We deliver a high-resolution print-ready PDF. You can print it at home, email it to a local print shop, or use an online printer. Full control, no minimum quantities.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Can I use my own music?</h3>
+                <p>Yes! We have a library of licensed music, but you can also provide your own audio file and we'll sync it to the slideshow.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What if I need a rush order?</h3>
+                <p>Same-day slideshow delivery is available. Contact us and we'll make it happen — no extra stress, just speed.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="cta-banner">
+    <div class="container">
+        <h2>Ready to Create a Lasting Tribute?</h2>
+        <p>Upload your photos, place your order, and we'll handle the rest. Your loved one deserves something beautiful.</p>
+        <a href="{% url 'signup' %}" class="btn btn-gold">Start Your Tribute →</a>
+        <p style="margin-top:1rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">No commitment needed — create an account and explore</p>
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+    <div class="container">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Have questions or need a custom order? We're here to help — usually within 2 hours.</p>
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                <h3>We'd Love to Hear From You</h3>
+                <p>Whether you have a question, need a rush order, or want something completely custom — reach out. We'll get back to you within 2 hours during business hours.</p>
+                <div class="contact-detail">📧 mmsantelopevalley@gmail.com</div>
+                <div class="contact-detail">📞 (661) 472-5457</div>
+                <div class="contact-detail">⏱️ Mon–Fri, 9am–10pm EST</div>
+            </div>
+            <form class="contact-form" method="post" action="{% url 'home' %}#contact">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="service">Service Interested In</label>
+                    <select id="service" name="service">
+                        <option value="">Select a service...</option>
+                        <option value="slideshow">Tribute Slideshow + Flyer</option>
+                        <option value="rush">Rush Order</option>
+                        <option value="other">Something Else</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message →</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ toggle script -->
+<script>
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.addEventListener('click', () => {
+            item.classList.toggle('active');
+        });
+    });
+</script>
+{% endblock %}

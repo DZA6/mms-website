@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — Memorial Media Services{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <div>
+            <h1>Welcome, {{ user.username }}</h1>
+            <p style="color:var(--text-light);">Manage your tributes and orders.</p>
+        </div>
+        <a href="{% url 'upload' %}" class="btn btn-primary">Upload Photos →</a>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <h3>📸 Photos</h3>
+            <div class="stat">{{ photos|length }} <span style="font-size:0.9rem;color:var(--text-light);">/ 60</span></div>
+            <p>Uploaded for your slideshow</p>
+        </div>
+        <div class="dashboard-card">
+            <h3>📋 Orders</h3>
+            <div class="stat">{{ orders|length }}</div>
+            <p>
+                {% for order in orders %}
+                    {{ order.get_status_display }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No orders yet
+                {% endfor %}
+            </p>
+        </div>
+        <div class="dashboard-card">
+            <h3>📹 Slideshows</h3>
+            <div class="stat">{{ slideshows|length }}</div>
+            <p>
+                {% for s in slideshows %}
+                    {{ s.get_status_display }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    None yet
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+
+    <!-- === COMPLETED TRIBUTES (Download Section) === -->
+    {% if completed_slideshows %}
+    <div style="max-width:1200px;margin:2rem auto;padding:0 2rem;">
+        <h2 style="font-family:var(--font-serif);color:var(--navy);margin-bottom:1rem;">✅ Your Completed Tributes</h2>
+        <p style="color:var(--text-light);margin-bottom:1.5rem;">Your finished tribute is ready to download. You'll always have access here.</p>
+        {% for s in completed_slideshows %}
+        <div class="dashboard-card" style="margin-bottom:1.5rem;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+                <!-- Video -->
+                <div>
+                    <h3 style="margin-bottom:0.5rem;">📹 Tribute Video</h3>
+                    {% if s.video_file %}
+                    <video controls style="width:100%;max-height:250px;border-radius:8px;margin-bottom:0.8rem;">
+                        <source src="{{ s.video_file.url }}" type="video/mp4">
+                    </video>
+                    <a href="{{ s.video_file.url }}" download
+                       class="btn btn-primary" style="font-size:0.85rem;padding:0.6rem 1.2rem;">
+                        ⬇ Download Video
+                    </a>
+                    {% else %}
+                    <p style="color:var(--text-light);">Video not available yet.</p>
+                    {% endif %}
+                </div>
+
+                <!-- PDF Flyer -->
+                <div>
+                    <h3 style="margin-bottom:0.5rem;">📄 Memorial Flyer</h3>
+                    {% if s.pdf_file %}
+                    <div style="background:var(--cream);border-radius:8px;padding:2rem;text-align:center;margin-bottom:0.8rem;">
+                        <p style="font-size:2rem;margin-bottom:0.5rem;">📄</p>
+                        <p style="color:var(--text-light);font-size:0.9rem;">{{ s.pdf_file.name|cut:"slideshows/" }}</p>
+                    </div>
+                    <a href="{{ s.pdf_file.url }}" download
+                       class="btn btn-secondary" style="font-size:0.85rem;padding:0.6rem 1.2rem;">
+                        ⬇ Download Flyer PDF
+                    </a>
+                    {% else %}
+                    <p style="color:var(--text-light);">Flyer PDF will appear here once ready.</p>
+                    {% endif %}
+
+                    <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--cream-dark);">
+                        <p style="font-size:0.8rem;color:var(--text-light);">
+                            <strong>{{ s.title }}</strong><br>
+                            Completed: {{ s.created_at|date:"F j, Y" }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Orders -->
+    {% if orders %}
+    <div style="max-width:1200px;margin:2rem auto;padding:0 2rem;">
+        <h2 style="font-family:var(--font-serif);color:var(--navy);margin-bottom:1rem;">Your Orders</h2>
+        <div style="display:grid;gap:1rem;">
+            {% for order in orders %}
+            <a href="{% url 'order_detail' order.id %}" style="text-decoration:none;">
+                <div class="dashboard-card" style="display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <h3 style="margin:0;">Order #{{ order.id }}</h3>
+                        <p style="margin:0;color:var(--text-light);">{{ order.get_tier_display }}</p>
+                    </div>
+                    <div style="text-align:right;">
+                        <span class="stat" style="font-size:1rem;">{{ order.get_status_display }}</span>
+                        <p style="font-size:0.8rem;color:var(--text-light);">{{ order.created_at|date:"M j, Y" }}</p>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Pricing CTA if no orders AND no completed tributes -->
+    {% if not orders and not completed_slideshows %}
+    <div style="max-width:1200px;margin:2rem auto;padding:0 2rem;text-align:center;">
+        <div class="dashboard-card" style="padding:3rem;">
+            <h2 style="font-family:var(--font-serif);color:var(--navy);margin-bottom:1rem;">Ready for Your Tribute?</h2>
+            <p style="color:var(--text-light);margin-bottom:1.5rem;">Upload photos first, then choose a package that suits your needs.</p>
+            <a href="{% url 'home' %}#pricing" class="btn btn-primary">View Pricing →</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Photos -->
+    <div style="max-width:1200px;margin:2rem auto;padding:0 2rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <h2 style="font-family:var(--font-serif);color:var(--navy);">Your Photos</h2>
+            <a href="{% url 'upload' %}" class="btn btn-secondary" style="padding:0.5rem 1.5rem;">+ Add More</a>
+        </div>
+        <div class="dashboard-card">
+            {% if photos %}
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin-top:0.5rem;">
+                {% for photo in photos %}
+                    <div style="border-radius:8px;overflow:hidden;background:var(--cream-dark);">
+                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" style="width:100%;height:120px;object-fit:cover;">
+                        <p style="padding:0.5rem;font-size:0.8rem;color:var(--text);">{{ photo.title }}</p>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p style="color:var(--text-light);margin:1rem 0;">No photos uploaded yet. Start by uploading some!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

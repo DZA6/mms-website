@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Order #{{ order.id }} — Memorial Media Services{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <div>
+            <h1>Order #{{ order.id }}</h1>
+            <p style="color:var(--text-light);">{{ order.get_tier_display }}</p>
+        </div>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">← Dashboard</a>
+    </div>
+
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+            <div class="dashboard-card">
+                <h3>Order Status</h3>
+                <div class="stat">{{ order.get_status_display }}</div>
+                <p>Placed: {{ order.created_at|date:"F j, Y" }}</p>
+                {% if order.status == 'paid' or order.status == 'processing' %}
+                    <p style="color:var(--sage);margin-top:0.5rem;">✓ Payment received — we're working on your tribute.</p>
+                {% elif order.status == 'completed' %}
+                    <p style="color:var(--gold);margin-top:0.5rem;">✓ Your tribute is ready — download below!</p>
+                {% endif %}
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Delivery</h3>
+                <p style="color:var(--text-light);">Digital delivery — download your files from the dashboard or below.</p>
+            </div>
+        </div>
+
+        {% if slideshows %}
+        <div style="margin-top:2rem;">
+            {% for slideshow in slideshows %}
+            <div class="dashboard-card" style="margin-bottom:1.5rem;overflow:hidden;">
+                <h3 style="margin-bottom:1rem;">📹 {{ slideshow.title }}</h3>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:1rem;">
+                    Status: {{ slideshow.get_status_display }}
+                </p>
+
+                {% if slideshow.status == 'completed' %}
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+                        <!-- Video -->
+                        <div>
+                            <h4 style="margin-bottom:0.5rem;">Tribute Video</h4>
+                            {% if slideshow.video_file %}
+                            <video controls style="width:100%;max-height:300px;border-radius:8px;margin-bottom:0.8rem;">
+                                <source src="{{ slideshow.video_file.url }}" type="video/mp4">
+                            </video>
+                            <a href="{{ slideshow.video_file.url }}" download
+                               class="btn btn-primary" style="font-size:0.85rem;padding:0.6rem 1.2rem;">
+                                ⬇ Download Video
+                            </a>
+                            {% else %}
+                            <p style="color:var(--text-light);">Video file pending.</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- PDF Flyer -->
+                        <div>
+                            <h4 style="margin-bottom:0.5rem;">Memorial Flyer (PDF)</h4>
+                            {% if slideshow.pdf_file %}
+                            <div style="background:var(--cream);border-radius:8px;padding:2rem;text-align:center;margin-bottom:0.8rem;">
+                                <p style="font-size:2rem;margin-bottom:0.5rem;">📄</p>
+                                <p style="color:var(--text-light);font-size:0.9rem;">{{ slideshow.pdf_file.name|cut:"slideshows/" }}</p>
+                            </div>
+                            <a href="{{ slideshow.pdf_file.url }}" download
+                               class="btn btn-secondary" style="font-size:0.85rem;padding:0.6rem 1.2rem;">
+                                ⬇ Download Flyer PDF
+                            </a>
+                            {% else %}
+                            <p style="color:var(--text-light);">Flyer PDF will appear here once ready.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% elif slideshow.status == 'failed' %}
+                    <p style="color:#d32f2f;font-size:0.9rem;">
+                        ⚠️ {{ slideshow.error_message|default:"Something went wrong. Please contact us." }}
+                    </p>
+                {% else %}
+                    <p style="color:var(--text-light);">Your tribute is being prepared. We'll notify you when it's ready.</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if order.notes %}
+        <div style="margin-top:2rem;">
+            <div class="dashboard-card">
+                <h3>Notes</h3>
+                <p>{{ order.notes }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
