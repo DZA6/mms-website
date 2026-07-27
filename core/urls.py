@@ -10,13 +10,19 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('pricing/', views.pricing_page, name='pricing'),
     path('signup/', views.signup, name='signup'),
-    path('login/', views.custom_login, name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('upload/', views.upload_photo, name='upload'),
     path('order/<str:tier>/', views.create_order, name='create_order'),
     path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+    path('order/<int:order_id>/success/', views.order_success, name='order_success'),
+    path('download/<int:slideshow_id>/<str:file_type>/', views.download_slideshow_file, name='download_file'),
     path('stripe/webhook/', views.stripe_webhook, name='stripe_webhook'),
+    path('cart/', views.view_cart, name='view_cart'),
+    path('cart/add/<str:tier>/', views.add_to_cart, name='add_to_cart'),
+    path('cart/remove/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('cart/checkout/', views.checkout_cart, name='checkout_cart'),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cart — Memorial Media Services{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card" style="max-width:600px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+            <h1 style="margin:0;">Your Cart</h1>
+            <span style="font-size:1.5rem;">🛒</span>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div style="background:#e8f5e9;color:#2e7d32;padding:0.8rem;border-radius:8px;margin-bottom:1rem;font-size:0.9rem;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if items %}
+        <div style="margin-bottom:1.5rem;">
+            {% for item in items %}
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem;border-bottom:1px solid var(--cream-dark);">
+                <div>
+                    <strong>{{ item.tier_display }}</strong>
+                    <span style="color:var(--text-light);font-size:0.9rem;margin-left:0.5rem;">
+                        ${{ item.price_dollars|floatformat:2 }}
+                    </span>
+                    {% if item.quantity > 1 %}
+                        <span style="color:var(--text-light);font-size:0.85rem;">× {{ item.quantity }}</span>
+                    {% endif %}
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <span style="font-weight:bold;color:var(--gold);">${{ item.total_dollars|floatformat:2 }}</span>
+                    <a href="{% url 'remove_from_cart' item.id %}" style="color:#d32f2f;font-size:0.85rem;text-decoration:none;" onclick="return confirm('Remove this item?')">✕</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-top:2px solid var(--gold);margin-top:0.5rem;">
+            <strong style="font-size:1.2rem;">Total</strong>
+            <strong style="font-size:1.4rem;color:var(--gold);">${{ cart.total_dollars|floatformat:2 }}</strong>
+        </div>
+
+        <form method="post" action="{% url 'checkout_cart' %}">
+            {% csrf_token %}
+            <button type="submit" class="submit-btn" style="margin-top:1.5rem;width:100%;">
+                Proceed to Checkout →
+            </button>
+        </form>
+        {% else %}
+        <div style="text-align:center;padding:3rem 1rem;">
+            <p style="font-size:3rem;margin-bottom:1rem;">🛒</p>
+            <p style="color:var(--text-light);margin-bottom:1.5rem;">Your cart is empty.</p>
+            <a href="{% url 'pricing' %}" class="submit-btn" style="display:inline-block;text-decoration:none;">
+                Browse Packages →
+            </a>
+        </div>
+        {% endif %}
+
+        <p class="auth-alt" style="margin-top:1.5rem;">
+            <a href="{% url 'pricing' %}">← Continue Shopping</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

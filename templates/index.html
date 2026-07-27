@@ -4,11 +4,6 @@
 {% block title %}Memorial Media Services — Beautiful Tribute Slideshows & Flyers{% endblock %}
 
 {% block content %}
-<!-- Trust Bar -->
-<div class="trust-bar">
-    ★ Serving families with compassion &nbsp;·&nbsp; <span>FREE 2-day shipping</span> on print orders over $100 &nbsp;·&nbsp; Unlimited revisions
-</div>
-
 <!-- Hero Section -->
 <section class="hero">
     <div class="hero-content">
@@ -30,31 +25,6 @@
                 <div class="mock-rating">★★★★★</div>
                 <h3>See Our Work in Action</h3>
                 <p>Professional tribute slideshows and memorial flyers — crafted with care, delivered with speed.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Social Proof Bar -->
-<section class="social-proof">
-    <div class="container">
-        <p class="label">Trusted by Families Across the Country</p>
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number">500<span>+</span></div>
-                <div class="stat-label">Tributes Created</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">50<span>+</span></div>
-                <div class="stat-label">5-Star Reviews</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">99<span>%</span></div>
-                <div class="stat-label">Satisfaction Rate</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">48<span>hr</span></div>
-                <div class="stat-label">Avg. Turnaround</div>
             </div>
         </div>
     </div>
@@ -90,23 +60,37 @@
     <div class="container">
         <h2 class="section-title">Simple, Transparent Pricing</h2>
         <p class="section-subtitle">No hidden fees. No subscriptions. Unlimited revisions.</p>
-        <div class="pricing-grid" style="grid-template-columns:minmax(300px,450px);justify-content:center;">
-            <div class="pricing-card featured">
-                <div class="pricing-badge">Everything Included</div>
-                <p class="pricing-tag">Tribute Video + Memorial Flyer</p>
-                <h3>Tribute Package</h3>
-                <div class="price">$149 <span>one-time</span></div>
-                <p class="price-note">Perfect for services, online sharing & keepsakes</p>
+        <div class="pricing-grid" style="grid-template-columns:minmax(300px,350px) minmax(300px,450px);justify-content:center;gap:2rem;">
+            <div class="pricing-card">
+                <h3>Basic Tribute</h3>
+                <div class="price">$49.99 <span>one-time</span></div>
+                <p class="price-note" style="color:var(--text-light);font-size:0.85rem;">Just the video — no extras</p>
                 <ul class="pricing-features">
                     <li>HD tribute slideshow (3–5 min)</li>
                     <li>Custom licensed music</li>
-                    <li>Custom memorial flyer design (PDF)</li>
-                    <li>Unlimited photo & design revisions</li>
-                    <li>Digital download link + tribute page</li>
-                    <li>Photo enhancement included</li>
-                    <li>PDF flyer — print at home or at a local shop</li>
+                    <li>Unlimited photo revisions</li>
+                    <li style="color:var(--text-light);opacity:0.5;"><s>Memorial flyer (PDF)</s></li>
+                    <li style="color:var(--text-light);opacity:0.5;"><s>Photo enhancement</s></li>
+                    <li style="color:var(--text-light);opacity:0.5;"><s>Shareable tribute page</s></li>
                 </ul>
-                <a href="{% url 'create_order' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Choose Your Package</a>
+                <a href="{% url 'add_to_cart' 'basic' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">Add to Cart</a>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <h3>Tribute Package</h3>
+                <div class="price">$89.99 <span>one-time</span></div>
+                <p class="price-note" style="color:var(--text-light);font-size:0.85rem;">Video + Flyer — everything included</p>
+                <ul class="pricing-features">
+                    <li>HD tribute slideshow (3–5 min)</li>
+                    <li>Custom licensed music</li>
+                    <li>Unlimited photo revisions</li>
+                    <li>Custom memorial flyer design (PDF)</li>
+                    <li>Photo enhancement included</li>
+                    <li>Shareable online tribute page</li>
+                    <li>Digital download link</li>
+                </ul>
+                <a href="{% url 'add_to_cart' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Add to Cart</a>
             </div>
         </div>
 
@@ -135,19 +119,21 @@
             </div>
             <div class="gallery-item">
                 <a href="{{ MEDIA_URL }}flyers/A4_Flyer_Funeral_Floral.pdf" target="_blank">
-                    <div class="placeholder">📄</div>
+                    <img src="{{ MEDIA_URL }}flyers/thumbs/A4_Flyer_Funeral_Floral.png"
+                         alt="A4 Funeral Floral Flyer" style="width:100%;height:100%;object-fit:cover;">
                     <div class="gallery-overlay">
                         <strong>Memorial Flyer — Floral Design</strong>
-                        <p>A4 funeral flyer template — view PDF</p>
+                        <p>A4 funeral flyer template — click to view PDF</p>
                     </div>
                 </a>
             </div>
             <div class="gallery-item">
                 <a href="{{ MEDIA_URL }}flyers/A3_Funeral_Graphic_Pack_Main.pdf" target="_blank">
-                    <div class="placeholder">📄</div>
+                    <img src="{{ MEDIA_URL }}flyers/thumbs/A3_Funeral_Graphic_Pack_Main.png"
+                         alt="A3 Funeral Graphic Pack" style="width:100%;height:100%;object-fit:cover;">
                     <div class="gallery-overlay">
                         <strong>Funeral Graphic Pack</strong>
-                        <p>A3 multi-page design — view PDF</p>
+                        <p>A3 multi-page design — click to view PDF</p>
                     </div>
                 </a>
             </div>
@@ -212,7 +198,7 @@
 <!-- FAQ -->
 <section class="faq" id="faq">
     <div class="container">
-        <h2 class="section-title">Frequently Asked Questions</h2>
+        <h2 class="section-title" id="faq">Frequently Asked Questions</h2>
         <p class="section-subtitle">Everything you need to know about our service.</p>
         <div class="faq-grid">
             <div class="faq-item">
@@ -243,6 +229,48 @@
     </div>
 </section>
 
+<!-- FAQ Structured Data for Google Rich Results -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "How long does it take?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Most tributes are delivered within 48 hours of photo submission. Rush orders (same-day) are available for an additional fee."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What if I don't like the design?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "We offer unlimited revisions until you're completely satisfied. Your happiness is guaranteed."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "How do I receive my slideshow and flyer?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Both are delivered digitally. You get a private download link for the HD video and a PDF of the memorial flyer."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Can I print the flyer myself?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. We deliver a print-ready PDF that you can print at home, a local print shop, or order printed copies from us."
+            }
+        }
+    ]
+}
+</script>
+
 <!-- CTA Banner -->
 <section class="cta-banner">
     <div class="container">
@@ -262,8 +290,8 @@
             <div class="contact-info">
                 <h3>We'd Love to Hear From You</h3>
                 <p>Whether you have a question, need a rush order, or want something completely custom — reach out. We'll get back to you within 2 hours during business hours.</p>
-                <div class="contact-detail">📧 mmsantelopevalley@gmail.com</div>
-                <div class="contact-detail">📞 (661) 472-5457</div>
+                <div class="contact-detail">📧 {{ CONTACT_EMAIL }}</div>
+                <div class="contact-detail">📞 {{ CONTACT_PHONE }}</div>
                 <div class="contact-detail">⏱️ Mon–Fri, 9am–10pm EST</div>
             </div>
             <form class="contact-form" method="post" action="{% url 'home' %}#contact">

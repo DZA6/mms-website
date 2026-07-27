@@ -29,6 +29,50 @@
             </div>
         </div>
 
+        <!-- Funeral Details -->
+        {% if order.deceased_name or order.date_of_birth or order.date_of_death %}
+        <div style="margin-top:2rem;">
+            <div class="dashboard-card">
+                <h3>Funeral / Memorial Details</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 2rem;margin-top:1rem;">
+                    {% if order.deceased_name %}
+                        <div><strong>Deceased:</strong> {{ order.deceased_name }}</div>
+                    {% endif %}
+                    {% if order.date_of_birth %}
+                        <div><strong>Date of Birth:</strong> {{ order.date_of_birth|date:"F j, Y" }}</div>
+                    {% endif %}
+                    {% if order.date_of_death %}
+                        <div><strong>Date of Passing:</strong> {{ order.date_of_death|date:"F j, Y" }}</div>
+                    {% endif %}
+                    {% if order.service_type %}
+                        <div><strong>Service Type:</strong> {{ order.service_type }}</div>
+                    {% endif %}
+                    {% if order.service_date %}
+                        <div><strong>Service Date:</strong> {{ order.service_date|date:"F j, Y" }}</div>
+                    {% endif %}
+                    {% if order.service_time %}
+                        <div><strong>Service Time:</strong> {{ order.service_time }}</div>
+                    {% endif %}
+                    {% if order.service_location %}
+                        <div style="grid-column:1/-1;"><strong>Service Location:</strong> {{ order.service_location }}</div>
+                    {% endif %}
+                    {% if order.burial_place %}
+                        <div style="grid-column:1/-1;"><strong>Burial / Interment:</strong> {{ order.burial_place }}</div>
+                    {% endif %}
+                    {% if order.preferred_song %}
+                        <div style="grid-column:1/-1;"><strong>Preferred Song:</strong> {{ order.preferred_song }}</div>
+                    {% endif %}
+                </div>
+                {% if order.special_notes %}
+                    <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--cream-dark);">
+                        <strong>Additional Notes:</strong>
+                        <p style="color:var(--text-light);margin-top:0.3rem;">{{ order.special_notes|linebreaksbr }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
         {% if slideshows %}
         <div style="margin-top:2rem;">
             {% for slideshow in slideshows %}
@@ -47,7 +91,7 @@
                             <video controls style="width:100%;max-height:300px;border-radius:8px;margin-bottom:0.8rem;">
                                 <source src="{{ slideshow.video_file.url }}" type="video/mp4">
                             </video>
-                            <a href="{{ slideshow.video_file.url }}" download
+                            <a href="{% url 'download_file' slideshow.id 'video' %}" download
                                class="btn btn-primary" style="font-size:0.85rem;padding:0.6rem 1.2rem;">
                                 ⬇ Download Video
                             </a>
@@ -64,7 +108,7 @@
                                 <p style="font-size:2rem;margin-bottom:0.5rem;">📄</p>
                                 <p style="color:var(--text-light);font-size:0.9rem;">{{ slideshow.pdf_file.name|cut:"slideshows/" }}</p>
                             </div>
-                            <a href="{{ slideshow.pdf_file.url }}" download
+                            <a href="{% url 'download_file' slideshow.id 'pdf' %}" download
                                class="btn btn-secondary" style="font-size:0.85rem;padding:0.6rem 1.2rem;">
                                 ⬇ Download Flyer PDF
                             </a>
@@ -82,15 +126,6 @@
                 {% endif %}
             </div>
             {% endfor %}
-        </div>
-        {% endif %}
-
-        {% if order.notes %}
-        <div style="margin-top:2rem;">
-            <div class="dashboard-card">
-                <h3>Notes</h3>
-                <p>{{ order.notes }}</p>
-            </div>
         </div>
         {% endif %}
     </div>

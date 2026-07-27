@@ -1,25 +1,41 @@
 {% extends 'base.html' %}
-{% block title %}Pricing — Memorial Media Services{% endblock %}
+{% block title %}Memorial Media Services — Pricing & Plans for Tribute Slideshows & Flyers{% endblock %}
 {% block content %}
 <section class="pricing" id="pricing" style="padding-top:120px;">
     <div class="container">
         <h2 class="section-title">Simple Pricing</h2>
         <p class="section-subtitle">Everything you need in one package. Includes unlimited revisions.</p>
-        <div class="pricing-grid" style="grid-template-columns:minmax(300px,450px);justify-content:center;">
-            <div class="pricing-card featured">
-                <div class="pricing-badge">Most Popular</div>
-                <h3>Tribute Package</h3>
-                <div class="price">$149 <span>one-time</span></div>
+        <div class="pricing-grid" style="grid-template-columns:minmax(300px,350px) minmax(300px,450px);justify-content:center;gap:2rem;">
+            <div class="pricing-card">
+                <h3>Basic Tribute</h3>
+                <div class="price">$49.99 <span>one-time</span></div>
+                <p class="price-note" style="color:var(--text-light);font-size:0.85rem;">Just the video — no extras</p>
                 <ul class="pricing-features">
                     <li>HD tribute slideshow (3–5 min)</li>
                     <li>Custom licensed music</li>
                     <li>Unlimited photo revisions</li>
-                    <li>Digital download link</li>
-                    <li>Shareable online tribute page</li>
-                    <li>Custom memorial flyer (PDF)</li>
-                    <li>Photo enhancement included</li>
+                    <li style="color:var(--text-light);opacity:0.5;"><s>Memorial flyer (PDF)</s></li>
+                    <li style="color:var(--text-light);opacity:0.5;"><s>Photo enhancement</s></li>
+                    <li style="color:var(--text-light);opacity:0.5;"><s>Shareable tribute page</s></li>
                 </ul>
-                <a href="{% url 'create_order' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Select Plan</a>
+                <a href="{% url 'add_to_cart' 'basic' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">Add to Cart</a>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <h3>Tribute Package</h3>
+                <div class="price">$89.99 <span>one-time</span></div>
+                <p class="price-note" style="color:var(--text-light);font-size:0.85rem;">Video + Flyer — everything included</p>
+                <ul class="pricing-features">
+                    <li>HD tribute slideshow (3–5 min)</li>
+                    <li>Custom licensed music</li>
+                    <li>Unlimited photo revisions</li>
+                    <li>Custom memorial flyer design (PDF)</li>
+                    <li>Photo enhancement included</li>
+                    <li>Shareable online tribute page</li>
+                    <li>Digital download link</li>
+                </ul>
+                <a href="{% url 'add_to_cart' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Add to Cart</a>
             </div>
         </div>
     </div>

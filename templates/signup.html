@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Sign Up — Memorial Media Services{% endblock %}
+{% block title %}Create Account — Memorial Media Services{% endblock %}
+{% block analytics_events %}
+        gtag('event', 'sign_up', {method: 'direct'});
+{% endblock %}
+{% block meta_desc %}Create your Memorial Media Services account to start your tribute slideshow or order memorial flyers.{% endblock %}
 {% block content %}
 <div class="auth-page">
     <div class="auth-card">

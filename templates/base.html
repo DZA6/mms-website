@@ -5,15 +5,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Memorial Media Services — Tribute Slideshows & Memorial Flyers{% endblock %}</title>
-    <meta name="description" content="Beautiful tribute slideshows and printed memorial flyers. We turn your photos into lasting tributes with compassion and care.">
+    <meta name="description" content="{% block meta_desc %}Beautiful tribute slideshows and memorial flyers for your loved one. We turn your photos into lasting tributes with compassion and care. Serving California City and Kern County.{% endblock %}">
+    <meta name="keywords" content="memorial slideshow, tribute video, funeral flyers, memorial programs, celebration of life, California City, Kern County, obituary design">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Memorial Media Services">
+    <meta property="og:title" content="{% block og_title %}Memorial Media Services — Tribute Slideshows & Memorial Flyers{% endblock %}">
+    <meta property="og:description" content="Beautiful tribute slideshows and memorial flyers for your loved one. We turn your photos into lasting tributes.">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/mms-logo.png' %}{% endblock %}">
+    <meta property="og:image:alt" content="Memorial Media Services logo">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Memorial Media Services">
+    <meta name="twitter:description" content="Beautiful tribute slideshows and memorial flyers for your loved one.">
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕊️</text></svg>">
+
+    <!-- Schema.org Local Business Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Memorial Media Services",
+        "description": "Beautiful tribute slideshows and memorial flyers. We turn your photos into lasting tributes.",
+        "url": "{{ request.build_absolute_uri|cut:request.path }}",
+        "telephone": "{{ CONTACT_PHONE|default:'(555) 123-4567' }}",
+        "email": "{{ CONTACT_EMAIL|default:'hello@memorialmediaservices.com' }}",
+        "areaServed": [
+            {
+                "@type": "City",
+                "name": "California City"
+            },
+            {
+                "@type": "AdministrativeArea",
+                "name": "Kern County"
+            }
+        ],
+        "priceRange": "$$",
+        "image": "{% static 'images/mms-logo.png' %}",
+        "sameAs": [
+            "https://facebook.com/your-page",
+            "https://instagram.com/your-page"
+        ]
+    }
+    </script>
+    <!-- Google Analytics 4 -->
+    {% if GOOGLE_ANALYTICS_ID %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ID }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ GOOGLE_ANALYTICS_ID }}');
+        {% block analytics_events %}{% endblock %}
+    </script>
+    {% endif %}
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+    <!-- Skip to content (accessibility) -->
+    <a href="#main-content" class="skip-link" style="position:absolute;top:-100px;left:0;background:var(--navy);color:white;padding:10px 20px;z-index:9999;transition:top 0.2s;">
+        Skip to main content
+    </a>
+
     <!-- Navigation -->
-    <nav class="navbar">
-        <a href="{% url 'home' %}" class="logo">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <a href="{% url 'home' %}" class="logo" aria-label="Memorial Media Services — Home">
             <img src="{% static 'images/mms-logo.png' %}" alt="Memorial Media Services" style="height:38px;display:block;">
         </a>
         <ul class="nav-links">
@@ -22,11 +85,12 @@
             <li><a href="{% url 'home' %}#gallery">Gallery</a></li>
             <li><a href="{% url 'home' %}#contact">Contact</a></li>
             {% if user.is_authenticated %}
+                <li><a href="{% url 'view_cart' %}" style="font-size:1.2rem;" title="Cart">🛒</a></li>
                 <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                 <li>
                     <form action="{% url 'logout' %}" method="post" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="nav-cta" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:var(--text)!important;">Log Out</button>
+                        <button type="submit" class="nav-cta" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:var(--text)!important;" aria-label="Log out of your account">Log Out</button>
                     </form>
                 </li>
             {% else %}
@@ -34,54 +98,63 @@
                 <li><a href="{% url 'signup' %}" class="nav-cta">Get Started</a></li>
             {% endif %}
         </ul>
-        <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+        <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Toggle navigation menu">☰</button>
     </nav>
 
-    {% block content %}{% endblock %}
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="footer-grid">
             <div class="footer-brand">
                 <h3>
                     <img src="{% static 'images/mms-logo.png' %}" alt="Memorial Media Services" style="height:32px;display:block;filter:brightness(0) invert(1);">
                 </h3>
-                <p>Turning your cherished photos into beautiful tribute slideshows and memorial keepsakes. Serving families with compassion and care.</p>
+                <p>Turning your cherished photos into beautiful tribute slideshows and memorial keepsakes. Serving families in California City, Mojave, Edwards AFB, and all of Kern County with compassion and care.</p>
             </div>
             <div>
                 <h4>Services</h4>
                 <ul>
-                    <li><a href="{% url 'home' %}#pricing">Tribute Slideshow + Flyer</a></li>
+                    <li><a href="{% url 'home' %}#pricing">Tribute Slideshows</a></li>
+                    <li><a href="{% url 'home' %}#pricing">Memorial Flyers</a></li>
                     <li><a href="{% url 'home' %}#gallery">Sample Gallery</a></li>
                 </ul>
             </div>
             <div>
-                <h4>Company</h4>
+                <h4>Service Area</h4>
                 <ul>
-                    <li><a href="{% url 'home' %}#how-it-works">How It Works</a></li>
-                    <li><a href="{% url 'home' %}#contact">Contact</a></li>
+                    <li><a href="{% url 'home' %}">California City</a></li>
+                    <li><a href="{% url 'home' %}">Mojave</a></li>
+                    <li><a href="{% url 'home' %}">Edwards AFB</a></li>
+                    <li><a href="{% url 'home' %}">Kern County</a></li>
                 </ul>
             </div>
             <div>
                 <h4>Support</h4>
                 <ul>
                     <li><a href="{% url 'home' %}#contact">Get In Touch</a></li>
-                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#faq">FAQ</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; {% now "Y" %} Memorial Media Services. Crafted with care.</p>
+            <p>&copy; {% now "Y" %} Memorial Media Services, serving California City and Kern County. Crafted with care.</p>
         </div>
     </footer>
 
     <script>
-        // Mobile menu toggle — same as onclick on the button
+        // Mobile menu toggle
         document.querySelector('.mobile-menu-btn')?.addEventListener('click', function(e) {
-            // Only handle if the inline onclick somehow didn't fire
             if (e.isTrusted) {
                 document.querySelector('.nav-links')?.classList.toggle('show');
             }
+        });
+        // Skip link focus
+        document.querySelector('.skip-link')?.addEventListener('click', function(e) {
+            this.style.top = '10px';
+            setTimeout(() => { this.style.top = '-100px'; }, 3000);
         });
     </script>
     {% block extra_scripts %}{% endblock %}

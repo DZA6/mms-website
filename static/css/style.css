@@ -65,30 +65,10 @@ a:hover {
 }
 
 /* --- Trust Bar --- */
-.trust-bar {
-    background: var(--navy);
-    color: rgba(255,255,255,0.8);
-    text-align: center;
-    font-size: 0.8rem;
-    padding: 0.4rem 1rem;
-    letter-spacing: 0.3px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1001;
-    height: 28px;
-}
-
-.trust-bar span {
-    color: var(--gold);
-    font-weight: 600;
-}
-
 /* --- Navigation --- */
 .navbar {
     position: fixed;
-    top: 28px;
+    top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
@@ -303,55 +283,6 @@ a:hover {
 }
 
 /* --- Social Proof Bar --- */
-.social-proof {
-    background: var(--white);
-    border-top: 1px solid var(--cream-dark);
-    border-bottom: 1px solid var(--cream-dark);
-    padding: 2rem 2rem;
-    text-align: center;
-}
-
-.social-proof .container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.social-proof .label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--text-light);
-    margin-bottom: 1rem;
-}
-
-.social-proof .stats {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-}
-
-.social-proof .stat-item {
-    text-align: center;
-}
-
-.social-proof .stat-number {
-    font-family: var(--font-serif);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--navy);
-}
-
-.social-proof .stat-number span {
-    color: var(--gold);
-}
-
-.social-proof .stat-label {
-    font-size: 0.85rem;
-    color: var(--text-light);
-    margin-top: 0.2rem;
-}
-
 .hero-visual {
     display: flex;
     justify-content: center;
@@ -1211,10 +1142,6 @@ section {
         grid-template-columns: 1fr;
     }
     
-    .social-proof .stats {
-        gap: 1.5rem;
-    }
-
     /* Mobile dashboard fixes */
     .dashboard-grid {
         grid-template-columns: 1fr;

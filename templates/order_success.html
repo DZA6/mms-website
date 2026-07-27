@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Payment Successful — Memorial Media Services{% endblock %}
+{% block analytics_events %}
+        gtag('event', 'purchase', {
+            transaction_id: '{{ order.id }}',
+            value: {{ amount }},
+            currency: 'USD',
+            items: [{'item_name': '{{ order.get_tier_display }}', 'quantity': 1}]
+        });
+{% endblock %}
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card" style="max-width:500px;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:1rem;color:var(--gold);">&#10003;</div>
+        <h1>Payment Received!</h1>
+        <p class="auth-subtitle">Thank you for your order.</p>
+
+        <div style="background:var(--cream);padding:1rem;border-radius:8px;margin:2rem 0;">
+            <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:0.3rem;">
+                Order #{{ order.id }} &mdash; {{ order.get_tier_display }}
+            </p>
+            <p style="font-size:0.9rem;color:var(--text-light);">
+                Status: <strong>Paid &mdash; Processing</strong>
+            </p>
+        </div>
+
+        <p style="color:var(--text-light);margin-bottom:2rem;">
+            We'll start working on your tribute right away. You'll hear from us within 24 hours.
+        </p>
+
+        <a href="{% url 'dashboard' %}" class="submit-btn" style="display:inline-block;text-decoration:none;">
+            Go to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
