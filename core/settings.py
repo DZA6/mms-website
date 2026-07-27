@@ -167,8 +167,8 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 # Contact info
-CONTACT_PHONE = os.environ.get('CONTACT_PHONE', '(555) 000-0000')
-CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL', 'hello@yourbusiness.com')
+CONTACT_PHONE = os.environ.get('CONTACT_PHONE', '(661) 271-2148')
+CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL', 'MMSantelopevalley@gmail.com')
 
 # ------------------------------------------------------------------
 # Stripe

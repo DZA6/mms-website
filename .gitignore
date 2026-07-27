@@ -9,6 +9,7 @@ build/
 
 # Virtual environments
 venv/
+.venv/
 .env/
 
 # Static files build
@@ -23,6 +24,7 @@ staticfiles/
 media/client_slideshows/
 media/slideshows/
 media/videos/
+media/flyers/
 
 # IDE
 .idea/
