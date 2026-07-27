@@ -1,0 +1,209 @@
+PythonAnywhere Deployment Guide — Memorial Media Services
+=========================================================
+
+What's done on my end:
+- All code changes committed and pushed to GitHub
+- Contact info (661) 271-2148 / MMSantelopevalley@gmail.com set everywhere
+- django-axes added and installed
+- .env.example updated with production instructions
+- Static files collected
+
+---
+
+STEP 1 — Sign up for PythonAnywhere
+------------------------------------
+Go to https://www.pythonanywhere.com/ and create an account.
+For now, stick with the free "Beginner" plan — you can upgrade after testing.
+
+Your PythonAnywhere username will be important below. I'll use
+YOUR_USERNAME as a placeholder.
+
+---
+
+STEP 2 — Open a Bash console
+-----------------------------
+After logging in, look for:
+  Dashboard → "Bash" button (top-right)
+
+Click it. A terminal will open.
+
+Paste these commands (shift+ctrl+V to paste):
+
+--------------------------------------------------------------------------------
+git clone https://github.com/DZA6/mms-website.git
+cd mms-website
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py collectstatic --noinput
+--------------------------------------------------------------------------------
+
+That clones the site, sets up Python, installs everything, and preps the
+database and static files.
+
+---
+
+STEP 3 — Create the Web App
+-----------------------------
+1. Click the "Web" tab at the top
+2. Click "Add a new web app"
+3. Click "Manual configuration" (NOT "Django")
+4. Select Python 3.11 (or whatever is closest to 3.11)
+5. Click Next
+
+You should now see the web app configuration page.
+
+---
+
+STEP 4 — Set the virtual environment
+-------------------------------------
+In the "Virtualenv" section:
+1. Click the red "Enter path to a virtualenv" text
+2. Type:  /home/YOUR_USERNAME/mms-website/venv
+3. Click the blue checkmark to save
+
+---
+
+STEP 5 — Configure the WSGI file
+----------------------------------
+In the "Code" section, click the link next to "WSGI configuration file".
+It will open a text editor.
+
+Delete EVERYTHING in that file and paste this instead:
+
+--------------------------------------------------------------------------------
+import os
+import sys
+
+path = '/home/YOUR_USERNAME/mms-website'
+if path not in sys.path:
+    sys.path.append(path)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+--------------------------------------------------------------------------------
+
+Replace YOUR_USERNAME with your actual PythonAnywhere username.
+Click "Save" (top-right).
+
+---
+
+STEP 6 — Set static files
+---------------------------
+Go back to the Web tab. Find the "Static files" section.
+
+Add these TWO entries:
+
+  URL: /static/
+  Path: /home/YOUR_USERNAME/mms-website/staticfiles
+
+Then click Add, then:
+
+  URL: /media/
+  Path: /home/YOUR_USERNAME/mms-website/media
+
+Then click Add.
+
+---
+
+STEP 7 — Set environment variables
+------------------------------------
+In the Web tab, find "Environment variables" (under Code section).
+Click "Add environment variable" for each of these:
+
+  Variable                    Value
+  ─────────────────────────────────────────────────────────────
+  DJANGO_SECRET_KEY           5xVArWgpc9mK94z7bu0kc0EGT2ivlzzqtx74YP0dph2BmIBiDhM8-8oqySR4723sOBU
+  DJANGO_DEBUG                False
+  DJANGO_ALLOWED_HOSTS        www.yourdomain.com,yourdomain.com
+  SITE_URL                    https://www.yourdomain.com
+  STRIPE_SECRET_KEY           sk_liv...Lc2b        (from your .env)
+  STRIPE_PUBLISHABLE_KEY      pk_live_51TxbfJP...  (from your .env)
+  STRIPE_WEBHOOK_SECRET       whsec_EIIGrhNN...    (from your .env)
+  GOOGLE_ANALYTICS_ID         G-YVSQJ9SE13
+  CONTACT_PHONE               (661) 271-2148
+  CONTACT_EMAIL               MMSantelopevalley@gmail.com
+
+Replace yourdomain.com with your actual domain later.
+The Stripe values are the SAME ones already in your .env file.
+
+---
+
+STEP 8 — Upload media files
+-----------------------------
+In the "Files" tab, navigate to:
+  /home/YOUR_USERNAME/mms-website/media/
+
+You'll need to upload these sample files:
+
+  media/flyers/A3_Funeral_Graphic_Pack_Main.pdf
+  media/flyers/A4_Flyer_Funeral_Floral.pdf
+  media/flyers/thumbs/A3_Funeral_Graphic_Pack_Main.png
+  media/flyers/thumbs/A4_Flyer_Funeral_Floral.png
+  media/videos/promo.mp4
+  media/client_slideshows/ (all the sample images)
+
+Total: ~176 MB. Use the Files tab's "Upload" button.
+
+---
+
+STEP 9 — Create an admin account
+----------------------------------
+Back in the Bash console (from Step 2), run:
+
+  cd ~/mms-website
+  source venv/bin/activate
+  python manage.py createsuperuser
+
+Enter your email and password. This is your admin login.
+
+---
+
+STEP 10 — Reload the web app
+------------------------------
+Go to the Web tab and click the green "Reload" button.
+
+Your site should now be live at:
+  https://YOUR_USERNAME.pythonanywhere.com/
+
+---
+
+STEP 11 — Point your domain (from Squarespace)
+-----------------------------------------------
+Once you've confirmed the site works at the PythonAnywhere subdomain,
+you can point your Squarespace domain.
+
+You have two options:
+
+OPTION A — Just point DNS (keep domain at Squarespace, faster):
+  1. Go to Squarespace Domains → DNS settings
+  2. Add a CNAME record:
+     - Host: www
+     - Points to: YOUR_USERNAME.pythonanywhere.com
+  3. In PythonAnywhere Web tab → add your domain under "Custom domains"
+
+OPTION B — Transfer to Cloudflare (cheaper, safer, 5-7 days):
+  $8-10/year vs Squarespace $25-40/year
+  Includes free CDN proxy (hides your server IP)
+
+---
+
+STEP 12 — Set up Stripe webhook
+---------------------------------
+Go to https://dashboard.stripe.com/webhooks
+Click "Add endpoint"
+
+  Endpoint URL: https://www.yourdomain.com/stripe/webhook/
+  Events to send: select "checkout.session.completed"
+
+Click "Add endpoint"
+Reveal the signing secret (whsec_...)
+Add it to PythonAnywhere env vars as STRIPE_WEBHOOK_SECRET
+Reload the web app
+
+---
+
+Done! Your site will be live after Step 10.

@@ -7,9 +7,16 @@ import base64
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
-from google.auth.transport.requests import Request
+try:
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build
+    from google.auth.transport.requests import Request
+    GOOGLE_AVAILABLE = True
+except ImportError:
+    Credentials = None
+    build = None
+    Request = None
+    GOOGLE_AVAILABLE = False
 
 # Path to the shared Google token (same one the Google Workspace skill uses)
 TOKEN_PATH = os.path.expanduser('~/.hermes/google_token.json')
@@ -190,6 +197,8 @@ Memorial Media Services &bull; California City, CA<br>
 
 def _send_via_gmail(msg):
     """Low-level Gmail API send — shared by all email functions."""
+    if not GOOGLE_AVAILABLE:
+        return False, 'Google API packages not installed'
     try:
         creds = Credentials.from_authorized_user_file(TOKEN_PATH)
         if creds.expired and creds.refresh_token:
