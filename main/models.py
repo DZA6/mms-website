@@ -57,6 +57,14 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} — {self.user.username} — {self.get_tier_display()}"
 
+    def tier_price_cents(self):
+        """Return the order's price in cents based on its tier."""
+        from main.views import TIER_PRICES
+        return TIER_PRICES.get(self.tier, 0)
+
+    def price_dollars(self):
+        return self.tier_price_cents() / 100
+
 
 class SlideShow(models.Model):
     """A generated video slideshow from a user's photos."""

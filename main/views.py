@@ -1,5 +1,3 @@
-import json
-import os
 from pathlib import Path
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -7,13 +5,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
-from django.db import models
 
-from .forms import PhotoForm, BulkPhotoForm
+from .forms import BulkPhotoForm
 from .models import Photo, Order, SlideShow, ContactMessage, Cart, CartItem
 from .email_helper import send_order_email
 
@@ -218,6 +214,8 @@ def create_order(request, tier):
 @csrf_exempt
 def stripe_webhook(request):
     """Handle Stripe webhook events with signature verification."""
+    import logging
+    logger = logging.getLogger(__name__)
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
     endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
@@ -248,8 +246,6 @@ def stripe_webhook(request):
                 order.save()
 
                 # Send automated thank-you email
-                import logging
-                logger = logging.getLogger(__name__)
                 success, msg = send_order_email(order)
                 if not success:
                     logger.error(f'Failed to send order email for order #{order.id}: {msg}')
@@ -291,6 +287,14 @@ def stripe_webhook(request):
                     # Send email for the first order only
                     if idx == 0:
                         success, msg = send_order_email(order)
+                        # Notify the owner of the new order (cart checkout)
+                        try:
+                            from .email_helper import send_new_order_notification
+                            owner_success, owner_msg = send_new_order_notification(order)
+                            if not owner_success:
+                                logger.error(f'Failed to send owner notification for order #{order.id}: {owner_msg}')
+                        except Exception as e:
+                            logger.error(f'Owner notification error for order #{order.id}: {e}')
 
                     if order.tier in ('basic', 'digital', 'complete'):
                         slideshow = SlideShow.objects.create(
