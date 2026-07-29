@@ -248,11 +248,20 @@ def stripe_webhook(request):
                 order.save()
 
                 # Send automated thank-you email
+                import logging
+                logger = logging.getLogger(__name__)
                 success, msg = send_order_email(order)
                 if not success:
-                    import logging
-                    logger = logging.getLogger(__name__)
                     logger.error(f'Failed to send order email for order #{order.id}: {msg}')
+
+                # Notify the owner of the new order (independent of Hermes availability)
+                try:
+                    from .email_helper import send_new_order_notification
+                    owner_success, owner_msg = send_new_order_notification(order)
+                    if not owner_success:
+                        logger.error(f'Failed to send owner notification for order #{order.id}: {owner_msg}')
+                except Exception as e:
+                    logger.error(f'Owner notification error for order #{order.id}: {e}')
 
                 if order.tier in ('basic', 'digital', 'complete'):
                     slideshow = SlideShow.objects.create(

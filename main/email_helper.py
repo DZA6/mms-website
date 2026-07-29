@@ -214,3 +214,75 @@ def _send_via_gmail(msg):
         return True, 'Email sent'
     except Exception as e:
         return False, str(e)
+
+
+def send_new_order_notification(order):
+    """Notify the business owner that a new order was placed and paid."""
+    owner_email = os.environ.get('OWNER_EMAIL', 'mmsantelopevalley@gmail.com')
+    user_name = order.user.get_full_name() or order.user.username
+    site_url = os.environ.get('SITE_URL', 'http://localhost:8000')
+    admin_url = f'{site_url}/memorial-admin/main/order/{order.id}/change/'
+
+    msg = MIMEMultipart('alternative')
+    msg['To'] = owner_email
+    msg['From'] = 'mmsantelopevalley@gmail.com'
+    msg['Subject'] = f'🛒 NEW ORDER #{order.id} — {order.get_tier_display()} (${order.tier_price_cents() // 100})'
+
+    text_body = f"""NEW ORDER RECEIVED — Memorial Media Services
+
+Order #{order.id}
+Tier: {order.get_tier_display()}
+Customer: {user_name} ({order.user.email})
+Ordered: {order.created_at.strftime('%B %d, %Y at %I:%M %p')}
+
+{'-' * 40}
+TO DO:
+1. Log into the admin panel: {admin_url}
+2. Review the order details and funeral information
+3. Wait for the customer to upload photos
+4. Create their tribute slideshow
+5. Mark it complete when done
+
+New order total: ${order.tier_price_cents() // 100}
+"""
+
+    html_body = f"""<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family:Arial,sans-serif;background:#f5f0eb;margin:0;padding:0;">
+<table cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+<tr><td style="background:linear-gradient(135deg,#1a2a3a,#2c3e50);padding:40px 30px;text-align:center;">
+<h1 style="color:#c9a84c;margin:0 0 8px;font-size:28px;">🛒 New Order #{order.id}</h1>
+<p style="color:#fff;margin:0;font-size:15px;">A customer just placed an order!</p>
+</td></tr>
+<tr><td style="padding:30px;">
+<table cellpadding="8" cellspacing="0" width="100%" style="font-size:15px;">
+<tr><td style="color:#666;width:120px;"><strong>Package</strong></td><td style="color:#333;"><strong>{order.get_tier_display()}</strong></td></tr>
+<tr><td style="color:#666;"><strong>Customer</strong></td><td style="color:#333;">{user_name}</td></tr>
+<tr><td style="color:#666;"><strong>Email</strong></td><td style="color:#333;">{order.user.email}</td></tr>
+<tr><td style="color:#666;"><strong>Date</strong></td><td style="color:#333;">{order.created_at.strftime('%B %d, %Y at %I:%M %p')}</td></tr>
+<tr><td style="color:#666;"><strong>Status</strong></td><td style="color:#27ae60;"><strong>✓ PAID</strong></td></tr>
+</table>
+<div style="background:#f8f4ef;border-radius:8px;padding:20px;margin-top:20px;border-left:4px solid #c9a84c;">
+<p style="margin:0 0 10px;color:#333;"><strong>Next steps:</strong></p>
+<ol style="margin:0;color:#555;font-size:14px;line-height:1.8;">
+<li>Log into the admin panel</li>
+<li>Review order details and funeral info</li>
+<li>Wait for customer photo uploads</li>
+<li>Create the tribute slideshow</li>
+<li>Mark complete when done</li>
+</ol>
+<p style="margin:15px 0 0;"><a href="{admin_url}" style="background:#1a2a3a;color:#c9a84c;text-decoration:none;padding:12px 28px;border-radius:8px;font-size:14px;display:inline-block;">Open Order in Admin</a></p>
+</div>
+</td></tr>
+<tr><td style="background:#f5f0eb;padding:20px 30px;text-align:center;color:#999;font-size:12px;">
+Memorial Media Services — You're doing great work.
+</td></tr>
+</table>
+</body>
+</html>"""
+
+    msg.attach(MIMEText(text_body, 'plain'))
+    msg.attach(MIMEText(html_body, 'html'))
+
+    return _send_via_gmail(msg)
