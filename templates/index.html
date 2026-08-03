@@ -20,8 +20,8 @@
         <div class="hero-visual">
             <div class="hero-card">
                 <div class="hero-photo-strip">
-                    <img src="{{ MEDIA_URL }}people/elderly_woman.jpg" alt="Elderly woman smiling in a warm portrait" loading="lazy">
-                    <img src="{{ MEDIA_URL }}people/elderly_man.jpg" alt="Elderly man in a gentle portrait" loading="lazy">
+                    <img src="{% static 'samples/people/elderly_woman.jpg' %}" alt="Elderly woman smiling in a warm portrait" loading="lazy">
+                    <img src="{% static 'samples/people/elderly_man.jpg' %}" alt="Elderly man in a gentle portrait" loading="lazy">
                 </div>
                 <div class="mock-rating">★★★★★</div>
                 <h3>See Our Work in Action</h3>
@@ -62,7 +62,7 @@
         <h2 class="section-title">Simple, Transparent Pricing</h2>
         <p class="section-subtitle">No hidden fees. No subscriptions. Unlimited revisions.</p>
         <div class="pricing-craft">
-            <img src="{{ MEDIA_URL }}people/person_computer.jpg" alt="Designer crafting a tribute slideshow on a computer" loading="lazy">
+            <img src="{% static 'samples/people/person_computer.jpg' %}" alt="Designer crafting a tribute slideshow on a computer" loading="lazy">
             <p>Every order is hand-crafted by a real designer — reviewed frame by frame, not auto-generated.</p>
         </div>
         <div class="pricing-grid" style="grid-template-columns:minmax(300px,350px) minmax(300px,450px);justify-content:center;gap:2rem;">
@@ -123,8 +123,8 @@
                 </div>
             </div>
             <div class="gallery-item">
-                <a href="{{ MEDIA_URL }}flyers/A4_Flyer_Funeral_Floral.pdf" target="_blank">
-                    <img src="{{ MEDIA_URL }}flyers/thumbs/A4_Flyer_Funeral_Floral.png"
+                <a href="{% static 'samples/flyers/A4_Flyer_Funeral_Floral.pdf' %}" target="_blank">
+                    <img src="{% static 'samples/flyers/thumbs/A4_Flyer_Funeral_Floral.png' %}"
                          alt="A4 Funeral Floral Flyer" style="width:100%;height:100%;object-fit:cover;">
                     <div class="gallery-overlay">
                         <strong>Memorial Flyer — Floral Design</strong>
@@ -133,8 +133,8 @@
                 </a>
             </div>
             <div class="gallery-item">
-                <a href="{{ MEDIA_URL }}flyers/A3_Funeral_Graphic_Pack_Main.pdf" target="_blank">
-                    <img src="{{ MEDIA_URL }}flyers/thumbs/A3_Funeral_Graphic_Pack_Main.png"
+                <a href="{% static 'samples/flyers/A3_Funeral_Graphic_Pack_Main.pdf' %}" target="_blank">
+                    <img src="{% static 'samples/flyers/thumbs/A3_Funeral_Graphic_Pack_Main.png' %}"
                          alt="A3 Funeral Graphic Pack" style="width:100%;height:100%;object-fit:cover;">
                     <div class="gallery-overlay">
                         <strong>Funeral Graphic Pack</strong>
@@ -144,7 +144,7 @@
             </div>
             <div class="gallery-item">
                 <video class="gallery-video" style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
-                    poster="{{ MEDIA_URL }}videos/gallery1_poster.jpg"
+                    poster="{% static 'samples/videos/gallery1_poster.jpg' %}"
                     onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"
                     onclick="this.paused?this.play():this.pause()">
                     <source src="{{ MEDIA_URL }}videos/gallery1.mp4" type="video/mp4">
@@ -156,7 +156,7 @@
             </div>
             <div class="gallery-item">
                 <video class="gallery-video" style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
-                    poster="{{ MEDIA_URL }}videos/gallery2_poster.jpg"
+                    poster="{% static 'samples/videos/gallery2_poster.jpg' %}"
                     onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"
                     onclick="this.paused?this.play():this.pause()">
                     <source src="{{ MEDIA_URL }}videos/gallery2.mp4" type="video/mp4">
@@ -168,7 +168,7 @@
             </div>
             <div class="gallery-item">
                 <video class="gallery-video" style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
-                    poster="{{ MEDIA_URL }}videos/gallery3_poster.jpg"
+                    poster="{% static 'samples/videos/gallery3_poster.jpg' %}"
                     onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"
                     onclick="this.paused?this.play():this.pause()">
                     <source src="{{ MEDIA_URL }}videos/gallery3.mp4" type="video/mp4">
@@ -179,8 +179,8 @@
                 </div>
             </div>
             <div class="gallery-item">
-                <a href="{{ MEDIA_URL }}flyers/web_samples/flyer_floral.jpg" target="_blank">
-                    <img src="{{ MEDIA_URL }}flyers/thumbs/flyer_floral.jpg"
+                <a href="{% static 'samples/flyers/flyer_floral.jpg' %}" target="_blank">
+                    <img src="{% static 'samples/flyers/thumbs/flyer_floral.jpg' %}"
                          alt="Floral Memorial Flyer" style="width:100%;height:100%;object-fit:cover;">
                     <div class="gallery-overlay">
                         <strong>Memorial Flyer — Soft Floral</strong>
@@ -189,8 +189,8 @@
                 </a>
             </div>
             <div class="gallery-item">
-                <a href="{{ MEDIA_URL }}flyers/web_samples/flyer_memorial.jpg" target="_blank">
-                    <img src="{{ MEDIA_URL }}flyers/thumbs/flyer_memorial.jpg"
+                <a href="{% static 'samples/flyers/flyer_memorial.jpg' %}" target="_blank">
+                    <img src="{% static 'samples/flyers/thumbs/flyer_memorial.jpg' %}"
                          alt="Memorial Remembrance Flyer" style="width:100%;height:100%;object-fit:cover;">
                     <div class="gallery-overlay">
                         <strong>Memorial Flyer — Remembrance</strong>
@@ -199,8 +199,8 @@
                 </a>
             </div>
             <div class="gallery-item">
-                <a href="{{ MEDIA_URL }}flyers/web_samples/flyer_candles.jpg" target="_blank">
-                    <img src="{{ MEDIA_URL }}flyers/thumbs/flyer_candles.jpg"
+                <a href="{% static 'samples/flyers/flyer_candles.jpg' %}" target="_blank">
+                    <img src="{% static 'samples/flyers/thumbs/flyer_candles.jpg' %}"
                          alt="Candlelight Memorial Flyer" style="width:100%;height:100%;object-fit:cover;">
                     <div class="gallery-overlay">
                         <strong>Memorial Flyer — Candlelight</strong>
@@ -218,10 +218,10 @@
 <!-- Workplace photo band (visual only) -->
 <section class="workplace-band" aria-hidden="true">
     <div class="workplace-band-grid">
-        <img src="{{ MEDIA_URL }}team/team_meeting.jpg" alt="" loading="lazy">
-        <img src="{{ MEDIA_URL }}team/team_collab.jpg" alt="" loading="lazy">
-        <img src="{{ MEDIA_URL }}team/office_desk.jpg" alt="" loading="lazy">
-        <img src="{{ MEDIA_URL }}team/creative_team.jpg" alt="" loading="lazy">
+        <img src="{% static 'samples/team/team_meeting.jpg' %}" alt="" loading="lazy">
+        <img src="{% static 'samples/team/team_collab.jpg' %}" alt="" loading="lazy">
+        <img src="{% static 'samples/team/office_desk.jpg' %}" alt="" loading="lazy">
+        <img src="{% static 'samples/team/creative_team.jpg' %}" alt="" loading="lazy">
     </div>
 </section>
 
