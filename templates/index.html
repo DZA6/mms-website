@@ -19,9 +19,10 @@
         </div>
         <div class="hero-visual">
             <div class="hero-card">
-                <video controls style="width:100%;border-radius:12px;max-height:220px;background:#000;" poster="{% static 'images/mms-logo.png' %}">
-                    <source src="{{ MEDIA_URL }}videos/promo.mp4" type="video/mp4">
-                </video>
+                <div class="hero-photo-strip">
+                    <img src="{{ MEDIA_URL }}people/elderly_woman.jpg" alt="Elderly woman smiling in a warm portrait" loading="lazy">
+                    <img src="{{ MEDIA_URL }}people/elderly_man.jpg" alt="Elderly man in a gentle portrait" loading="lazy">
+                </div>
                 <div class="mock-rating">★★★★★</div>
                 <h3>See Our Work in Action</h3>
                 <p>Professional tribute slideshows and memorial flyers — crafted with care, delivered with speed.</p>
@@ -60,6 +61,10 @@
     <div class="container">
         <h2 class="section-title">Simple, Transparent Pricing</h2>
         <p class="section-subtitle">No hidden fees. No subscriptions. Unlimited revisions.</p>
+        <div class="pricing-craft">
+            <img src="{{ MEDIA_URL }}people/person_computer.jpg" alt="Designer crafting a tribute slideshow on a computer" loading="lazy">
+            <p>Every order is hand-crafted by a real designer — reviewed frame by frame, not auto-generated.</p>
+        </div>
         <div class="pricing-grid" style="grid-template-columns:minmax(300px,350px) minmax(300px,450px);justify-content:center;gap:2rem;">
             <div class="pricing-card">
                 <h3>Basic Tribute</h3>

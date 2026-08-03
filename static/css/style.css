@@ -318,6 +318,21 @@ a:hover {
     color: var(--navy);
 }
 
+.hero-photo-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-photo-strip img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
 .hero-card .mock-rating {
     color: var(--gold);
     font-size: 0.9rem;
@@ -455,6 +470,45 @@ section {
 
 .pricing-card.featured:hover {
     transform: scale(1.05) translateY(-3px);
+}
+
+.pricing-craft {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 640px;
+    margin: 0 auto 2.5rem;
+    background: var(--off-white);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.pricing-craft img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    flex-shrink: 0;
+}
+
+.pricing-craft p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+    .pricing-craft {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    .pricing-craft img {
+        width: 100%;
+        height: 160px;
+    }
 }
 
 .pricing-badge {
