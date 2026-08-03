@@ -20,7 +20,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 TIER_PRICES = {
     'basic': 4999,
-    'digital': 8999,
+    'digital': 7499,
     'print': 9900,
     'complete': 19900,
 }

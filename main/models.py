@@ -14,7 +14,7 @@ class Photo(models.Model):
 class Order(models.Model):
     TIER_CHOICES = [
         ('basic', 'Basic Tribute — $49.99'),
-        ('digital', 'Tribute Package — $89.99'),
+        ('digital', 'Tribute Package — $74.99'),
     ]
     STATUS_CHOICES = [
         ('pending', 'Pending Payment'),

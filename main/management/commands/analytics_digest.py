@@ -42,7 +42,7 @@ class Command(BaseCommand):
             "",
             f"New orders:          {orders.count()}",
             f"  Basic ($49.99):    {orders.filter(tier='basic').count()}",
-            f"  Package ($89.99):  {orders.filter(tier='digital').count()}",
+            f"  Package ($74.99):  {orders.filter(tier='digital').count()}",
             f"Paid orders:         {paid_orders.count()}",
             f"Revenue:             ${revenue_cents / 100:.2f}",
             "",
