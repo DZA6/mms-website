@@ -138,33 +138,39 @@
                 </a>
             </div>
             <div class="gallery-item">
-                <video style="width:100%;height:100%;object-fit:cover;" muted loop
-                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
+                <video class="gallery-video" style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
+                    poster="{{ MEDIA_URL }}videos/gallery1_poster.jpg"
+                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"
+                    onclick="this.paused?this.play():this.pause()">
                     <source src="{{ MEDIA_URL }}videos/gallery1.mp4" type="video/mp4">
                 </video>
                 <div class="gallery-overlay">
                     <strong>Tribute Slideshow Sample</strong>
-                    <p>Hover to preview — gentle transitions</p>
+                    <p>Tap or hover to preview — gentle transitions</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <video style="width:100%;height:100%;object-fit:cover;" muted loop
-                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
+                <video class="gallery-video" style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
+                    poster="{{ MEDIA_URL }}videos/gallery2_poster.jpg"
+                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"
+                    onclick="this.paused?this.play():this.pause()">
                     <source src="{{ MEDIA_URL }}videos/gallery2.mp4" type="video/mp4">
                 </video>
                 <div class="gallery-overlay">
                     <strong>Memorial Tribute Sample</strong>
-                    <p>Hover to preview — portrait format</p>
+                    <p>Tap or hover to preview — portrait format</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <video style="width:100%;height:100%;object-fit:cover;" muted loop
-                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
+                <video class="gallery-video" style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
+                    poster="{{ MEDIA_URL }}videos/gallery3_poster.jpg"
+                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"
+                    onclick="this.paused?this.play():this.pause()">
                     <source src="{{ MEDIA_URL }}videos/gallery3.mp4" type="video/mp4">
                 </video>
                 <div class="gallery-overlay">
                     <strong>Celebration of Life Sample</strong>
-                    <p>Hover to preview — cinematic style</p>
+                    <p>Tap or hover to preview — cinematic style</p>
                 </div>
             </div>
             <div class="gallery-item">

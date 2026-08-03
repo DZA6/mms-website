@@ -1172,3 +1172,152 @@ section {
         grid-template-columns: 1fr !important;
     }
 }
+
+/* ------------------------------------------------------------------
+   Mobile browser polish (additions)
+   ------------------------------------------------------------------ */
+@media (max-width: 480px) {
+    /* Prevent horizontal scroll on small phones */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    /* Touch-friendly tap targets (Apple/Google recommend 44px+) */
+    .nav-links a,
+    .btn,
+    button,
+    .footer a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+    }
+
+    .hero-buttons .btn {
+        width: auto;
+        min-width: 160px;
+    }
+
+    /* Gallery videos: keep aspect ratio, don't stretch */
+    .gallery-item video,
+    .gallery-item img {
+        object-fit: cover;
+    }
+
+    .gallery-item {
+        aspect-ratio: 4/3;
+        max-height: 320px;
+    }
+
+    /* Form fields fill the screen */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="file"],
+    select,
+    textarea {
+        width: 100%;
+        max-width: 100%;
+        font-size: 16px; /* prevents iOS zoom-on-focus */
+        padding: 0.85rem;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+
+    /* Contact form */
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Reduce oversized spacing on small screens */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .hero {
+        padding: 90px 1rem 50px;
+    }
+
+    .hero-text h1 {
+        font-size: 1.7rem;
+        line-height: 1.25;
+    }
+
+    .section {
+        padding: 3rem 0;
+    }
+
+    /* Cart items stack nicely */
+    .cart-item {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .cart-item-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Order form fields */
+    .order-form-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Gallery overlay text size */
+    .gallery-overlay strong {
+        font-size: 0.95rem;
+    }
+
+    .gallery-overlay p {
+        font-size: 0.8rem;
+    }
+
+    /* Dashboard cards */
+    .dashboard-card {
+        padding: 1.25rem;
+    }
+
+    /* Tables: allow horizontal scroll instead of breaking layout */
+    .table-wrap,
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Sticky mobile nav — always visible */
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .nav-links {
+        top: 56px;
+    }
+
+    .logo img {
+        height: 32px !important;
+    }
+
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
