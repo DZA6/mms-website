@@ -118,7 +118,56 @@ Memorial Media Services &bull; California City, CA<br>
     msg.attach(MIMEText(text_body, 'plain'))
     msg.attach(MIMEText(html_body, 'html'))
 
-    return _send_via_gmail(msg)
+    # Channel 1: Gmail API
+    ok1, err1 = _send_via_gmail(msg)
+    if ok1:
+        _log_alert('email_gmail', order.id, 'sent')
+        return True, 'Sent via Gmail API'
+
+    # Channel 2: SMTP fallback (if configured)
+    ok2, err2 = _send_via_smtp(msg)
+    if ok2:
+        _log_alert('email_smtp', order.id, 'sent (Gmail API failed: %s)' % err1)
+        return True, 'Sent via SMTP fallback'
+
+    # Both failed — durable log record so the alert is never lost silently
+    _log_alert('email_gmail', order.id, 'FAILED: %s' % err1)
+    _log_alert('email_smtp', order.id, 'FAILED: %s' % err2)
+    return False, f'Both channels failed. Gmail: {err1} | SMTP: {err2}'
+
+
+def _send_via_smtp(msg):
+    """Fallback channel — Django SMTP backend (uses settings.EMAIL_*)."""
+    try:
+        from django.conf import settings
+        from django.core.mail import EmailMessage
+
+        if not settings.EMAIL_HOST_USER:
+            return False, 'SMTP not configured (EMAIL_HOST_USER empty)'
+
+        email = EmailMessage(
+            subject=msg['Subject'],
+            body=msg.as_string(),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[msg['To']],
+        )
+        email.content_subtype = 'html'
+        email.send(fail_silently=False)
+        return True, 'Sent via SMTP'
+    except Exception as e:
+        return False, str(e)
+
+
+def _log_alert(channel, order_id, status):
+    """Append a durable line to the order alert log — never loses an alert."""
+    try:
+        from django.conf import settings
+        from datetime import datetime
+        path = getattr(settings, 'ORDER_ALERT_LOG', 'order_alerts.log')
+        with open(path, 'a') as f:
+            f.write(f'[{datetime.now().isoformat()}] order#{order_id} {channel}: {status}\n')
+    except Exception:
+        pass  # Logging must never break the request
 
 
 def send_completion_email(slideshow):
@@ -285,4 +334,19 @@ Memorial Media Services — You're doing great work.
     msg.attach(MIMEText(text_body, 'plain'))
     msg.attach(MIMEText(html_body, 'html'))
 
-    return _send_via_gmail(msg)
+    # Channel 1: Gmail API
+    ok1, err1 = _send_via_gmail(msg)
+    if ok1:
+        _log_alert('owner_gmail', order.id, 'sent')
+        return True, 'Sent via Gmail API'
+
+    # Channel 2: SMTP fallback (if configured)
+    ok2, err2 = _send_via_smtp(msg)
+    if ok2:
+        _log_alert('owner_smtp', order.id, 'sent (Gmail API failed: %s)' % err1)
+        return True, 'Sent via SMTP fallback'
+
+    # Both failed — durable log record so the alert is never lost silently
+    _log_alert('owner_gmail', order.id, 'FAILED: %s' % err1)
+    _log_alert('owner_smtp', order.id, 'FAILED: %s' % err2)
+    return False, f'Both channels failed. Gmail: {err1} | SMTP: {err2}'

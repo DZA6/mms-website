@@ -194,6 +194,25 @@ STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
 GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', '')
 
 # ------------------------------------------------------------------
+# Email — SMTP fallback channel (backup if Gmail API fails)
+# Set these in production (.env / PythonAnywhere env vars).
+# If unset, the Gmail API path is the only channel (still works).
+# ------------------------------------------------------------------
+EMAIL_BACKEND = os.environ.get(
+    'EMAIL_BACKEND',
+    'django.core.mail.backends.smtp.EmailBackend'
+)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 'yes')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'mmsantelopevalley@gmail.com')
+
+# Log file for order alerts — a durable record even if both email channels fail
+ORDER_ALERT_LOG = os.environ.get('ORDER_ALERT_LOG', str(BASE_DIR / 'order_alerts.log'))
+
+# ------------------------------------------------------------------
 # Security headers
 # ------------------------------------------------------------------
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
