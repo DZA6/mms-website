@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'axes.middleware.AxesMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',  # Content Security Policy
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -109,18 +111,27 @@ else:
         }
     }
 
-# Cache (fine for dev with LocMemCache; swap to Redis for production)
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+# Cache — Redis when REDIS_URL is set (production), LocMemCache for dev
+REDIS_URL = os.environ.get('REDIS_URL', '')
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': REDIS_URL,
+        }
     }
-}
-
-# Suppress django-ratelimit warnings about LocMemCache in dev
-SILENCED_SYSTEM_CHECKS = [
-    'django_ratelimit.E003',
-    'django_ratelimit.W001',
-]
+    SILENCED_SYSTEM_CHECKS = []
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        }
+    }
+    # Suppress django-ratelimit warnings about LocMemCache in dev
+    SILENCED_SYSTEM_CHECKS = [
+        'django_ratelimit.E003',
+        'django_ratelimit.W001',
+    ]
 
 # ------------------------------------------------------------------
 # Password validation
@@ -205,3 +216,42 @@ SESSION_SAVE_EVERY_REQUEST = True
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = not DEBUG
 CSRF_USE_SESSIONS = True
+
+# ------------------------------------------------------------------
+# Whitenoise — compressed static file serving in production
+# ------------------------------------------------------------------
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
+
+# ------------------------------------------------------------------
+# Content Security Policy (CSP)
+# ------------------------------------------------------------------
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # Inline styles used in templates
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://js.stripe.com")
+CSP_IMG_SRC = ("'self'", "data:", "https:")
+CSP_FONT_SRC = ("'self'", "https:", "data:")
+CSP_FRAME_SRC = ("'self'", "https://js.stripe.com")
+CSP_CONNECT_SRC = ("'self'", "https://api.stripe.com")
+CSP_MEDIA_SRC = ("'self'", "blob:")
+
+# ------------------------------------------------------------------
+# Sentry error monitoring (only if SENTRY_DSN is configured)
+# ------------------------------------------------------------------
+SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
+if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=0.2,
+        send_default_pii=False,
+    )

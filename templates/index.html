@@ -138,25 +138,64 @@
                 </a>
             </div>
             <div class="gallery-item">
-                <div class="placeholder">📄</div>
+                <video style="width:100%;height:100%;object-fit:cover;" muted loop
+                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
+                    <source src="{{ MEDIA_URL }}videos/gallery1.mp4" type="video/mp4">
+                </video>
                 <div class="gallery-overlay">
-                    <strong>Premium Prayer Card</strong>
-                    <p>Double-sided, premium stock</p>
+                    <strong>Tribute Slideshow Sample</strong>
+                    <p>Hover to preview — gentle transitions</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <div class="placeholder">📄</div>
+                <video style="width:100%;height:100%;object-fit:cover;" muted loop
+                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
+                    <source src="{{ MEDIA_URL }}videos/gallery2.mp4" type="video/mp4">
+                </video>
                 <div class="gallery-overlay">
-                    <strong>Premium Prayer Card</strong>
-                    <p>Double-sided, premium stock</p>
+                    <strong>Memorial Tribute Sample</strong>
+                    <p>Hover to preview — portrait format</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <div class="placeholder">📹</div>
+                <video style="width:100%;height:100%;object-fit:cover;" muted loop
+                    onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
+                    <source src="{{ MEDIA_URL }}videos/gallery3.mp4" type="video/mp4">
+                </video>
                 <div class="gallery-overlay">
-                    <strong>Celebration of Life</strong>
-                    <p>Soft transitions, ambient music</p>
+                    <strong>Celebration of Life Sample</strong>
+                    <p>Hover to preview — cinematic style</p>
                 </div>
+            </div>
+            <div class="gallery-item">
+                <a href="{{ MEDIA_URL }}flyers/web_samples/flyer_floral.jpg" target="_blank">
+                    <img src="{{ MEDIA_URL }}flyers/thumbs/flyer_floral.jpg"
+                         alt="Floral Memorial Flyer" style="width:100%;height:100%;object-fit:cover;">
+                    <div class="gallery-overlay">
+                        <strong>Memorial Flyer — Soft Floral</strong>
+                        <p>Sample design — click to view</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item">
+                <a href="{{ MEDIA_URL }}flyers/web_samples/flyer_memorial.jpg" target="_blank">
+                    <img src="{{ MEDIA_URL }}flyers/thumbs/flyer_memorial.jpg"
+                         alt="Memorial Remembrance Flyer" style="width:100%;height:100%;object-fit:cover;">
+                    <div class="gallery-overlay">
+                        <strong>Memorial Flyer — Remembrance</strong>
+                        <p>Sample design — click to view</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item">
+                <a href="{{ MEDIA_URL }}flyers/web_samples/flyer_candles.jpg" target="_blank">
+                    <img src="{{ MEDIA_URL }}flyers/thumbs/flyer_candles.jpg"
+                         alt="Candlelight Memorial Flyer" style="width:100%;height:100%;object-fit:cover;">
+                    <div class="gallery-overlay">
+                        <strong>Memorial Flyer — Candlelight</strong>
+                        <p>Sample design — click to view</p>
+                    </div>
+                </a>
             </div>
         </div>
         <div class="gallery-cta">
