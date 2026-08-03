@@ -98,10 +98,17 @@
                 <li><a href="{% url 'signup' %}" class="nav-cta">Get Started</a></li>
             {% endif %}
         </ul>
-        <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Toggle navigation menu">☰</button>
+        <button class="mobile-menu-btn" aria-label="Toggle navigation menu">☰</button>
     </nav>
 
     <main id="main-content">
+        {% if messages %}
+        <div class="messages" aria-live="polite">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
 
@@ -145,11 +152,9 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function(e) {
-            if (e.isTrusted) {
-                document.querySelector('.nav-links')?.classList.toggle('show');
-            }
+        // Mobile menu toggle (single handler — no inline onclick)
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
+            document.querySelector('.nav-links')?.classList.toggle('show');
         });
         // Skip link focus
         document.querySelector('.skip-link')?.addEventListener('click', function(e) {

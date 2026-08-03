@@ -16,6 +16,7 @@ urlpatterns = [
     path('upload/', views.upload_photo, name='upload'),
     path('order/<str:tier>/', views.create_order, name='create_order'),
     path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+    path('order/<int:order_id>/details/', views.order_details, name='order_details'),
     path('order/<int:order_id>/success/', views.order_success, name='order_success'),
     path('download/<int:slideshow_id>/<str:file_type>/', views.download_slideshow_file, name='download_file'),
     path('stripe/webhook/', views.stripe_webhook, name='stripe_webhook'),

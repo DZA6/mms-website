@@ -1422,6 +1422,11 @@ section {
         top: 56px;
     }
 
+    /* Skip link focus */
+    .skip-link:focus {
+        top: 10px;
+    }
+
     .logo img {
         height: 32px !important;
     }
@@ -1433,4 +1438,49 @@ section {
             transition-duration: 0.01ms !important;
         }
     }
+}
+
+/* ------------------------------------------------------------------
+   Flash messages (global — all screen sizes)
+   ------------------------------------------------------------------ */
+.messages {
+    position: fixed;
+    top: 72px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+    width: min(560px, 90vw);
+}
+
+.alert {
+    padding: 0.9rem 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    box-shadow: var(--shadow-lg);
+    font-size: 0.95rem;
+}
+
+.alert-success {
+    background: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #a5d6a7;
+}
+
+.alert-error,
+.alert-danger {
+    background: #fdecea;
+    color: #b71c1c;
+    border: 1px solid #f5c6c2;
+}
+
+.alert-info {
+    background: #e3f2fd;
+    color: #0d47a1;
+    border: 1px solid #bbdefb;
+}
+
+.alert-warning {
+    background: #fff8e1;
+    color: #f57f17;
+    border: 1px solid #ffe082;
 }

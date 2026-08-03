@@ -70,12 +70,20 @@ def dashboard(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     slideshows = SlideShow.objects.filter(user=request.user).order_by('-created_at')
     completed_slideshows = slideshows.filter(status='completed')
+
+    # Post-payment confirmation banner
+    payment_success = request.GET.get('payment') == 'success'
+    # Orders that still need the deceased's details (paid but no name yet)
+    pending_details = orders.filter(status='paid', deceased_name='')
+
     return render(request, 'dashboard.html', {
         'photos': photos,
         'orders': orders,
         'slideshows': slideshows,
         'completed_slideshows': completed_slideshows,
         'MAX_PHOTOS': 50,
+        'payment_success': payment_success,
+        'pending_details': pending_details,
     })
 
 
@@ -208,6 +216,7 @@ def create_order(request, tier):
         'tier': tier,
         'tier_name': tier_names.get(tier, tier),
         'price': f'${TIER_PRICES[tier] / 100:.2f}',
+        'service_type_options': SERVICE_TYPE_OPTIONS,
     })
 
 
@@ -316,6 +325,47 @@ def order_detail(request, order_id):
         'order': order,
         'slideshows': slideshows,
     })
+
+
+@login_required
+def order_details(request, order_id):
+    """Collect the deceased's details for a paid order (post-payment intake)."""
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+
+    if request.method == 'POST':
+        order.deceased_name = request.POST.get('deceased_name', order.deceased_name)
+        order.date_of_birth = request.POST.get('date_of_birth') or order.date_of_birth
+        order.date_of_death = request.POST.get('date_of_death') or order.date_of_death
+        order.service_type = request.POST.get('service_type', order.service_type)
+        order.service_date = request.POST.get('service_date') or order.service_date
+        order.service_time = request.POST.get('service_time', order.service_time)
+        order.service_location = request.POST.get('service_location', order.service_location)
+        order.burial_place = request.POST.get('burial_place', order.burial_place)
+        order.preferred_song = request.POST.get('preferred_song', order.preferred_song)
+        order.special_notes = request.POST.get('special_notes', order.special_notes)
+        order.save()
+        messages.success(request, 'Tribute details saved. You can upload photos next.')
+        return redirect('dashboard')
+
+    tier_names = {'basic': 'Basic Tribute', 'digital': 'Tribute Package', 'print': 'Tribute Print', 'complete': 'Complete Tribute'}
+    return render(request, 'order_form.html', {
+        'order': order,
+        'tier': order.tier,
+        'tier_name': tier_names.get(order.tier, order.get_tier_display()),
+        'price': f'${TIER_PRICES.get(order.tier, 0) / 100:.2f}',
+        'editing': True,
+        'service_type_options': SERVICE_TYPE_OPTIONS,
+    })
+
+
+SERVICE_TYPE_OPTIONS = [
+    'Funeral Service',
+    'Memorial Service',
+    'Celebration of Life',
+    'Graveside Service',
+    'Viewing / Visitation',
+    'Other',
+]
 
 
 @login_required

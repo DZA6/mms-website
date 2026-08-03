@@ -3,10 +3,10 @@
 {% block content %}
 <div class="auth-page">
     <div class="auth-card" style="max-width:600px;">
-        <h1>Complete Your Order</h1>
+        <h1>{% if editing %}Tell Us About Your Loved One{% else %}Complete Your Order{% endif %}</h1>
         <p class="auth-subtitle">{{ tier_name }} — ${{ price }}</p>
 
-        <form method="post">
+        <form method="post" action="{% if editing %}{% url 'order_details' order.id %}{% endif %}">
             {% csrf_token %}
 
             {% if tier == 'basic' %}
@@ -27,17 +27,17 @@
 
             <div class="form-group">
                 <label for="deceased_name">Deceased's Full Name <span style="color:var(--gold);">*</span></label>
-                <input type="text" name="deceased_name" id="deceased_name" required placeholder="e.g. John Michael Smith">
+                <input type="text" name="deceased_name" id="deceased_name" required placeholder="e.g. John Michael Smith" value="{{ order.deceased_name|default:'' }}">
             </div>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
                 <div class="form-group">
                     <label for="date_of_birth">Date of Birth</label>
-                    <input type="date" name="date_of_birth" id="date_of_birth">
+                    <input type="date" name="date_of_birth" id="date_of_birth" value="{{ order.date_of_birth|date:'Y-m-d'|default:'' }}">
                 </div>
                 <div class="form-group">
                     <label for="date_of_death">Date of Passing <span style="color:var(--gold);">*</span></label>
-                    <input type="date" name="date_of_death" id="date_of_death" required>
+                    <input type="date" name="date_of_death" id="date_of_death" required value="{{ order.date_of_death|date:'Y-m-d'|default:'' }}">
                 </div>
             </div>
 
@@ -47,49 +47,46 @@
                 <label for="service_type">Type of Service</label>
                 <select name="service_type" id="service_type">
                     <option value="">Select one...</option>
-                    <option value="Funeral Service">Funeral Service</option>
-                    <option value="Memorial Service">Memorial Service</option>
-                    <option value="Celebration of Life">Celebration of Life</option>
-                    <option value="Graveside Service">Graveside Service</option>
-                    <option value="Viewing / Visitation">Viewing / Visitation</option>
-                    <option value="Other">Other</option>
+                    {% for option in service_type_options %}
+                    <option value="{{ option }}" {% if order.service_type == option %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
                 <div class="form-group">
                     <label for="service_date">Date of Service</label>
-                    <input type="date" name="service_date" id="service_date">
+                    <input type="date" name="service_date" id="service_date" value="{{ order.service_date|date:'Y-m-d'|default:'' }}">
                 </div>
                 <div class="form-group">
                     <label for="service_time">Time of Service</label>
-                    <input type="text" name="service_time" id="service_time" placeholder="e.g. 11:00 AM">
+                    <input type="text" name="service_time" id="service_time" placeholder="e.g. 11:00 AM" value="{{ order.service_time|default:'' }}">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="service_location">Service Location</label>
-                <input type="text" name="service_location" id="service_location" placeholder="Church, funeral home, or venue name &amp; address">
+                <input type="text" name="service_location" id="service_location" placeholder="Church, funeral home, or venue name &amp; address" value="{{ order.service_location|default:'' }}">
             </div>
 
             <div class="form-group">
                 <label for="burial_place">Burial / Interment Location</label>
-                <input type="text" name="burial_place" id="burial_place" placeholder="Cemetery name &amp; location">
+                <input type="text" name="burial_place" id="burial_place" placeholder="Cemetery name &amp; location" value="{{ order.burial_place|default:'' }}">
             </div>
 
             <h3 style="margin:1.5rem 0 1rem;color:var(--text);">Tribute Preferences</h3>
 
             <div class="form-group">
                 <label for="preferred_song">Preferred Music / Song</label>
-                <input type="text" name="preferred_song" id="preferred_song" placeholder="A favorite hymn, instrumental piece, or special song">
+                <input type="text" name="preferred_song" id="preferred_song" placeholder="A favorite hymn, instrumental piece, or special song" value="{{ order.preferred_song|default:'' }}">
             </div>
 
             <div class="form-group">
                 <label for="special_notes">Additional Notes</label>
-                <textarea name="special_notes" id="special_notes" rows="3" placeholder="Photo preferences, special requests, anything else we should know..."></textarea>
+                <textarea name="special_notes" id="special_notes" rows="3" placeholder="Photo preferences, special requests, anything else we should know...">{{ order.special_notes|default:'' }}</textarea>
             </div>
 
-            <button type="submit" class="submit-btn">Continue to Payment →</button>
+            <button type="submit" class="submit-btn">{% if editing %}Save Tribute Details →{% else %}Continue to Payment →{% endif %}</button>
         </form>
         <p class="auth-alt"><a href="{% url 'home' %}#pricing">← Change Plan</a></p>
     </div>
