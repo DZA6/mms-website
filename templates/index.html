@@ -9,17 +9,17 @@
     <div class="hero-content">
         <div class="hero-text">
             <div class="hero-badge">★ Trusted by Local Families</div>
-            <h1>Turn Memories Into <em>Lasting Tributes</em></h1>
-            <p>We craft beautiful tribute slideshows and matching memorial flyers from your photos. All digital — delivered to your inbox, ready to share.</p>
+            <h1>Cherished Moments, <em>Beautifully Remembered</em></h1>
+            <p>When a life ends, the memories remain — in the photos you hold dear. Let us turn them into a gentle tribute slideshow and a memorial flyer your family will treasure, delivered right to your inbox.</p>
             <div class="hero-buttons">
-                <a href="{% url 'home' %}#pricing" class="btn btn-primary">Order Your Tribute →</a>
+                <a href="{% url 'home' %}#pricing" class="btn btn-primary">Begin Your Tribute →</a>
                 <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
                 <a href="#contact" class="btn btn-secondary" style="border-color:var(--gold);color:var(--gold);">Request Consultation</a>
             </div>
             <div class="hero-trust" style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);font-weight:600;">
-                <span>★★★★★ 4.9 Rated</span>
-                <span>⚡ 48-hr Delivery</span>
-                <span>♾️ Unlimited Revisions</span>
+                <span>★★★★★ 4.9 from Local Families</span>
+                <span>🕊️ 48-Hour Delivery</span>
+                <span>♾️ Unlimited Revisions, Always</span>
             </div>
         </div>
         <div class="hero-visual">
@@ -30,8 +30,8 @@
                     Your browser doesn't support video playback.
                 </video>
                 <div class="mock-rating">★★★★★</div>
-                <h3>See Our Work in Action</h3>
-                <p>Professional tribute slideshows and memorial flyers — crafted with care, delivered with speed.</p>
+                <h3>A Glimpse of What We Create</h3>
+                <p>Every tribute is crafted by hand, with patience and heart — and delivered in as little as 48 hours.</p>
             </div>
         </div>
     </div>
@@ -41,22 +41,22 @@
 <section class="how-it-works" id="how-it-works">
     <div class="container">
         <h2 class="section-title">How It Works</h2>
-        <p class="section-subtitle">Three simple steps to create a lasting tribute for your loved one. We handle everything so you can focus on what matters.</p>
+        <p class="section-subtitle">Three simple steps — and we handle everything in between, so you can focus on remembering and celebrating.</p>
         <div class="steps">
             <div class="step-card">
                 <div class="step-number">01</div>
-                <h3>Upload Your Photos</h3>
-                <p>Share your favorite photos through our secure portal. We accept JPG and PNG — and we'll enhance them at no extra cost.</p>
+                <h3>Share Your Photos</h3>
+                <p>Gather the photos that mean the most — the ones that make you smile, the ones that make you tear up a little. Upload them through our secure portal, and we'll gently enhance them at no extra cost.</p>
             </div>
             <div class="step-card">
                 <div class="step-number">02</div>
-                <h3>We Craft the Tribute</h3>
-                <p>Our designers create a cinematic HD slideshow with licensed music and a matching memorial flyer PDF. Preview and request unlimited revisions.</p>
+                <h3>We Craft It With Care</h3>
+                <p>Our designers take their time with every photo — building a cinematic HD slideshow with licensed music and a matching memorial flyer. Preview it as often as you like; we'll revise until it feels right.</p>
             </div>
             <div class="step-card">
                 <div class="step-number">03</div>
-                <h3>Receive & Share</h3>
-                <p>We deliver your HD video and flyer PDF directly to your inbox. Share the link with family near and far, or download and print locally.</p>
+                <h3>Remember & Share</h3>
+                <p>Your finished tribute arrives in your inbox, ready to share with family near and far — and to keep close for the years ahead.</p>
             </div>
         </div>
     </div>
@@ -65,8 +65,8 @@
 <!-- Pricing -->
 <section class="pricing" id="pricing">
     <div class="container">
-        <h2 class="section-title">Simple, Transparent Pricing</h2>
-        <p class="section-subtitle">No hidden fees. No subscriptions. Unlimited revisions.</p>
+        <h2 class="section-title">Simple, Honest Pricing</h2>
+        <p class="section-subtitle">No hidden fees, no subscriptions — just beautiful work and unlimited revisions.</p>
         <div class="pricing-craft">
             <img src="{% static 'samples/people/person_computer.jpg' %}" alt="Designer crafting a tribute slideshow on a computer" loading="lazy">
             <p>Every order is hand-crafted by a real designer — reviewed frame by frame, not auto-generated.</p>
@@ -75,7 +75,7 @@
             <div class="pricing-card">
                 <h3>Basic Tribute</h3>
                 <div class="price">$49.99 <span>one-time</span></div>
-                <p class="price-note" style="color:var(--text-light);font-size:0.85rem;">Just the video — no extras</p>
+                <p class="price-note" style="color:var(--text-light);font-size:0.85rem;">The video tribute, on its own</p>
                 <ul class="pricing-features">
                     <li>HD tribute slideshow (3–5 min)</li>
                     <li>Custom licensed music</li>
@@ -84,14 +84,14 @@
                     <li style="color:var(--text-light);opacity:0.5;"><s>Photo enhancement</s></li>
                     <li style="color:var(--text-light);opacity:0.5;"><s>Shareable tribute page</s></li>
                 </ul>
-                <a href="{% url 'add_to_cart' 'basic' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">Order This Tribute</a>
+                <a href="{% url 'add_to_cart' 'basic' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">Begin With This Tribute</a>
             </div>
 
             <div class="pricing-card featured">
                 <div class="pricing-badge">Most Popular</div>
                 <h3>Tribute Package</h3>
                 <div class="price">$74.99 <span>one-time</span></div>
-                <p class="price-note" style="color:var(--text-light);font-size:0.85rem;">Video + Flyer — everything included</p>
+                <p class="price-note" style="color:var(--text-light);font-size:0.85rem;">Video + flyer — everything you need</p>
                 <ul class="pricing-features">
                     <li>HD tribute slideshow (3–5 min)</li>
                     <li>Custom licensed music</li>
@@ -100,7 +100,7 @@
                     <li>Photo enhancement included</li>
                     <li>Digital download link</li>
                 </ul>
-                <a href="{% url 'add_to_cart' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Order This Tribute</a>
+                <a href="{% url 'add_to_cart' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Begin With This Tribute</a>
             </div>
         </div>
 
@@ -114,8 +114,8 @@
 <!-- Gallery -->
 <section class="gallery" id="gallery">
     <div class="container">
-        <h2 class="section-title">Sample Gallery</h2>
-        <p class="section-subtitle">A glimpse at the tributes and flyers we've created for families like yours.</p>
+        <h2 class="section-title">Tributes We've Made With Love</h2>
+        <p class="section-subtitle">A few of the tributes and flyers we've been honored to create.</p>
         <div class="gallery-grid">
             <div class="gallery-item">
                 <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
@@ -216,7 +216,7 @@
             </div>
         </div>
         <div class="gallery-cta">
-            <a href="{% url 'signup' %}" class="btn btn-primary">Start Your Tribute →</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary">Begin Your Tribute →</a>
         </div>
     </div>
 </section>
@@ -234,7 +234,7 @@
 <!-- Testimonials -->
 <section class="testimonials">
     <div class="container">
-        <h2 class="section-title">What Families Say</h2>
+        <h2 class="section-title">Words From the Families We've Served</h2>
         <p class="section-subtitle">Kind words from those we've had the privilege to serve.</p>
         <div class="testimonial-grid">
             <div class="testimonial-card">
@@ -269,11 +269,11 @@
         <div class="faq-grid">
             <div class="faq-item">
                 <h3>How long does it take?</h3>
-                <p>Most tributes are delivered within 48 hours of photo submission. Need it faster? Contact us for same-day rush availability.</p>
+                <p>Most tributes are delivered within 48 hours of your photos arriving. Need it sooner? Contact us for same-day rush availability.</p>
             </div>
             <div class="faq-item">
                 <h3>What if I don't like the design?</h3>
-                <p>We offer unlimited revisions until you're completely satisfied. Your happiness is guaranteed — we'll revise the slideshow or flyer as many times as needed.</p>
+                <p>You should never have to settle. We offer unlimited revisions until it feels right — and if we still can't get it there, we'll refund you in full.</p>
             </div>
             <div class="faq-item">
                 <h3>How do I receive my slideshow and flyer?</h3>
@@ -285,11 +285,11 @@
             </div>
             <div class="faq-item">
                 <h3>Can I use my own music?</h3>
-                <p>Yes! We have a library of licensed music, but you can also provide your own audio file and we'll sync it to the slideshow.</p>
+                <p>Of course. We have a library of licensed music, or you can share your own audio and we'll weave it into your tribute.</p>
             </div>
             <div class="faq-item">
                 <h3>What if I need a rush order?</h3>
-                <p>Same-day slideshow delivery is available. Contact us and we'll make it happen — no extra stress, just speed.</p>
+                <p>We're here for you. Same-day delivery is available — just reach out and we'll make it happen, gently and quickly.</p>
             </div>
         </div>
     </div>
@@ -306,7 +306,7 @@
             "name": "How long does it take?",
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Most tributes are delivered within 48 hours of photo submission. Need it faster? Contact us for same-day rush availability."
+                "text": "Most tributes are delivered within 48 hours of your photos arriving. Need it sooner? Contact us for same-day rush availability."
             }
         },
         {
@@ -314,7 +314,7 @@
             "name": "What if I don't like the design?",
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "We offer unlimited revisions until you're completely satisfied. Your happiness is guaranteed."
+                "text": "We offer unlimited revisions until it feels right, and if we still can't get it there, we'll refund you in full."
             }
         },
         {
@@ -340,22 +340,22 @@
 <!-- CTA Banner -->
 <section class="cta-banner">
     <div class="container">
-        <h2>Ready to Create a Lasting Tribute?</h2>
-        <p>Upload your photos, place your order, and we'll handle the rest. Your loved one deserves something beautiful.</p>
-        <a href="{% url 'signup' %}" class="btn btn-gold">Start Your Tribute →</a>
-        <p style="margin-top:1rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">No commitment needed — create an account and explore</p>
+        <h2>When You're Ready, We're Here</h2>
+        <p>There's no pressure and no rush — when the time feels right, we'll handle every detail with care.</p>
+        <a href="{% url 'signup' %}" class="btn btn-gold">Begin Your Tribute →</a>
+        <p style="margin-top:1rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">No commitment — create an account and explore at your own pace</p>
     </div>
 </section>
 
 <!-- Contact -->
 <section class="contact" id="contact">
     <div class="container">
-        <h2 class="section-title">Get In Touch</h2>
-        <p class="section-subtitle">Have questions or need a custom order? We're here to help — usually within 2 hours.</p>
+        <h2 class="section-title">We're Here for You</h2>
+        <p class="section-subtitle">A question, a rush order, or something entirely custom — we answer with care, usually within 2 hours.</p>
         <div class="contact-wrapper">
             <div class="contact-info">
                 <h3>We'd Love to Hear From You</h3>
-                <p>Whether you have a question, need a rush order, or want something completely custom — reach out. We'll get back to you within 2 hours during business hours.</p>
+                <p>Whether you're wondering where to start, need a tribute sooner, or want something completely unique — please reach out. A real person will get back to you, usually within 2 hours.</p>
                 <div class="contact-detail">📧 {{ CONTACT_EMAIL }}</div>
                 <div class="contact-detail">📞 {{ CONTACT_PHONE }}</div>
                 <div class="contact-detail">⏱️ Mon–Fri, 9am–10pm PT</div>
