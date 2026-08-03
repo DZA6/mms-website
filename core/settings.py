@@ -202,10 +202,10 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_SSL_REDIRECT = not DEBUG
 X_FRAME_OPTIONS = 'DENY'
 
-# HSTS — enable after verifying HTTPS in production
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
+# HSTS — site is HTTPS-only (Let's Encrypt cert live since 2026-08-03)
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 # Session security
 SESSION_COOKIE_AGE = 86400
@@ -233,12 +233,12 @@ STORAGES = {
 # Content Security Policy (CSP)
 # ------------------------------------------------------------------
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # Inline styles used in templates
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://js.stripe.com")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com")  # Inline styles used in templates + Google Fonts
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://js.stripe.com", "https://www.googletagmanager.com")
 CSP_IMG_SRC = ("'self'", "data:", "https:")
 CSP_FONT_SRC = ("'self'", "https:", "data:")
 CSP_FRAME_SRC = ("'self'", "https://js.stripe.com")
-CSP_CONNECT_SRC = ("'self'", "https://api.stripe.com")
+CSP_CONNECT_SRC = ("'self'", "https://api.stripe.com", "https://www.google-analytics.com", "https://analytics.google.com")
 CSP_MEDIA_SRC = ("'self'", "blob:")
 
 # ------------------------------------------------------------------

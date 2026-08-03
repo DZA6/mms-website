@@ -13,6 +13,30 @@ from .forms import BulkPhotoForm
 from .models import Photo, Order, SlideShow, ContactMessage, Cart, CartItem
 from .email_helper import send_order_email
 
+
+def robots_txt(request):
+    """Simple robots.txt — allow all crawlers, point at the sitemap."""
+    return HttpResponse(
+        "User-agent: *\nAllow: /\n\nSitemap: https://www.memorialmediaservices.org/sitemap.xml\n",
+        content_type="text/plain",
+    )
+
+
+def sitemap_xml(request):
+    """Minimal sitemap for the public pages."""
+    domain = "https://www.memorialmediaservices.org"
+    urls = ["", "pricing/", "login/", "signup/"]
+    entries = "".join(
+        f"<url><loc>{domain}/{u}</loc><changefreq>weekly</changefreq></url>"
+        for u in urls
+    )
+    return HttpResponse(
+        f'<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{entries}</urlset>\n',
+        content_type="application/xml",
+    )
+
+
 import stripe
 
 # Set Stripe API key from settings
@@ -21,8 +45,6 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 TIER_PRICES = {
     'basic': 4999,
     'digital': 7499,
-    'print': 9900,
-    'complete': 19900,
 }
 
 
@@ -280,14 +302,23 @@ def stripe_webhook(request):
             except Order.DoesNotExist:
                 pass
 
-        # Multi-item cart checkout — find pending orders for this user
+        # Multi-item cart checkout — mark only the orders created for THIS session
         if cart_id:
             user_id = metadata.get('user_id')
+            order_ids = metadata.get('order_ids', '')
             if user_id:
                 pending_orders = Order.objects.filter(
                     user__id=user_id,
                     status='pending'
-                ).order_by('-created_at')
+                )
+                # Prefer the explicit order ids from checkout metadata; fall back
+                # to nothing (never sweep ALL pending orders — abandoned orders
+                # from the old create_order flow must not be charged)
+                if order_ids:
+                    ids = [i for i in order_ids.split(',') if i.isdigit()]
+                    pending_orders = pending_orders.filter(id__in=ids)
+                else:
+                    pending_orders = pending_orders.none()
                 for idx, order in enumerate(pending_orders):
                     order.status = 'paid'
                     order.stripe_payment_intent = session.get('payment_intent', '')
@@ -498,6 +529,9 @@ def checkout_cart(request):
                 })
 
         try:
+            # Record order ids in session metadata so the webhook marks ONLY
+            # these orders paid (never abandoned pending orders from other flows)
+            order_ids = ','.join(str(o.id) for o in orders)
             checkout_session = stripe.checkout.Session.create(
                 mode='payment',
                 managed_payments={'enabled': False},
@@ -505,6 +539,7 @@ def checkout_cart(request):
                 metadata={
                     'cart_id': cart.id,
                     'user_id': request.user.id,
+                    'order_ids': order_ids,
                 },
                 success_url=request.build_absolute_uri('/dashboard/?payment=success'),
                 cancel_url=request.build_absolute_uri('/cart/'),

@@ -23,7 +23,7 @@
             </div>
             <button type="submit" class="submit-btn">Log In</button>
         </form>
-        <p class="auth-alt">Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+        <p class="auth-alt">Don't have an account? <a href="{% url 'signup' %}">Sign Up</a> · Forgot your password? <a href="mailto:{{ CONTACT_EMAIL }}">Contact us</a> to reset it.</p>
     </div>
 </div>
 {% endblock %}

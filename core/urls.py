@@ -6,6 +6,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('robots.txt', views.robots_txt, name='robots_txt'),
+    path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
     path('memorial-admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('pricing/', views.pricing_page, name='pricing'),
@@ -26,8 +28,8 @@ urlpatterns = [
     path('cart/checkout/', views.checkout_cart, name='checkout_cart'),
 ]
 
-# Serve static and media files directly from Django.
-# (Production: PythonAnywhere static mappings were unreliable for this
-# site; Django serving from STATIC_ROOT/MEDIA_ROOT is the fallback.)
+# Serve static and media files directly from Django in development.
+# In production PythonAnywhere's static file mappings serve /static/ and /media/
+# directly (see DEPLOY_GUIDE.txt); these fallbacks are no-ops when DEBUG=False.
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

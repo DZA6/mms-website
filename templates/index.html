@@ -16,6 +16,11 @@
                 <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
                 <a href="#contact" class="btn btn-secondary" style="border-color:var(--gold);color:var(--gold);">Request Consultation</a>
             </div>
+            <div class="hero-trust" style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);font-weight:600;">
+                <span>★★★★★ 4.9 Rated</span>
+                <span>⚡ 48-hr Delivery</span>
+                <span>♾️ Unlimited Revisions</span>
+            </div>
         </div>
         <div class="hero-visual">
             <div class="hero-card">
@@ -65,7 +70,7 @@
             <img src="{% static 'samples/people/person_computer.jpg' %}" alt="Designer crafting a tribute slideshow on a computer" loading="lazy">
             <p>Every order is hand-crafted by a real designer — reviewed frame by frame, not auto-generated.</p>
         </div>
-        <div class="pricing-grid" style="grid-template-columns:minmax(300px,350px) minmax(300px,450px);justify-content:center;gap:2rem;">
+        <div class="pricing-grid">
             <div class="pricing-card">
                 <h3>Basic Tribute</h3>
                 <div class="price">$49.99 <span>one-time</span></div>
@@ -112,7 +117,8 @@
         <p class="section-subtitle">A glimpse at the tributes and flyers we've created for families like yours.</p>
         <div class="gallery-grid">
             <div class="gallery-item">
-                <video style="width:100%;height:100%;object-fit:cover;" muted loop
+                <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
+                    poster="{% static 'images/mms-logo.png' %}"
                     onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
                     <source src="{{ MEDIA_URL }}videos/promo.mp4" type="video/mp4">
                 </video>
@@ -257,7 +263,7 @@
 <!-- FAQ -->
 <section class="faq" id="faq">
     <div class="container">
-        <h2 class="section-title" id="faq">Frequently Asked Questions</h2>
+        <h2 class="section-title">Frequently Asked Questions</h2>
         <p class="section-subtitle">Everything you need to know about our service.</p>
         <div class="faq-grid">
             <div class="faq-item">

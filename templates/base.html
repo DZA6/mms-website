@@ -8,21 +8,26 @@
     <meta name="description" content="{% block meta_desc %}Beautiful tribute slideshows and memorial flyers for your loved one. We turn your photos into lasting tributes with compassion and care. Serving California City and Kern County.{% endblock %}">
     <meta name="keywords" content="memorial slideshow, tribute video, funeral flyers, memorial programs, celebration of life, California City, Kern County, obituary design">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Memorial Media Services">
     <meta property="og:title" content="{% block og_title %}Memorial Media Services — Tribute Slideshows & Memorial Flyers{% endblock %}">
     <meta property="og:description" content="Beautiful tribute slideshows and memorial flyers for your loved one. We turn your photos into lasting tributes.">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:image" content="{% block og_image %}{% static 'images/mms-logo.png' %}{% endblock %}">
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/mms-logo.png' %}{% endblock %}">
     <meta property="og:image:alt" content="Memorial Media Services logo">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Memorial Media Services">
     <meta name="twitter:description" content="Beautiful tribute slideshows and memorial flyers for your loved one.">
+
+    <!-- Fonts: Cormorant Garamond (display serif) + Inter (UI sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕊️</text></svg>">
@@ -34,9 +39,9 @@
         "@type": "LocalBusiness",
         "name": "Memorial Media Services",
         "description": "Beautiful tribute slideshows and memorial flyers. We turn your photos into lasting tributes.",
-        "url": "{{ request.build_absolute_uri|cut:request.path }}",
-        "telephone": "{{ CONTACT_PHONE|default:'(555) 123-4567' }}",
-        "email": "{{ CONTACT_EMAIL|default:'hello@memorialmediaservices.com' }}",
+        "url": "{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}/",
+        "telephone": "{{ CONTACT_PHONE|default:'(661) 271-2148' }}",
+        "email": "{{ CONTACT_EMAIL|default:'MMSantelopevalley@gmail.com' }}",
         "areaServed": [
             {
                 "@type": "City",
@@ -48,11 +53,7 @@
             }
         ],
         "priceRange": "$$",
-        "image": "{% static 'images/mms-logo.png' %}",
-        "sameAs": [
-            "https://facebook.com/your-page",
-            "https://instagram.com/your-page"
-        ]
+        "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/mms-logo.png' %}"
     }
     </script>
     <!-- Google Analytics 4 -->
@@ -120,6 +121,11 @@
                     <img src="{% static 'images/mms-logo.png' %}" alt="Memorial Media Services" style="height:32px;display:block;filter:brightness(0) invert(1);">
                 </h3>
                 <p>Turning your cherished photos into beautiful tribute slideshows and memorial keepsakes. Serving families in California City, Mojave, Edwards AFB, and all of Kern County with compassion and care.</p>
+                <p style="margin-top:1rem;font-size:0.9rem;color:var(--text-light);">
+                    📞 <a href="tel:{{ CONTACT_PHONE|cut:' '|cut:'('|cut:')'|cut:'-' }}">{{ CONTACT_PHONE }}</a><br>
+                    ✉️ <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a><br>
+                    🕊️ Mon–Fri, 9am–10pm PT
+                </p>
             </div>
             <div>
                 <h4>Services</h4>
@@ -142,7 +148,7 @@
                 <h4>Support</h4>
                 <ul>
                     <li><a href="{% url 'home' %}#contact">Get In Touch</a></li>
-                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="{% url 'home' %}#faq">FAQ</a></li>
                 </ul>
             </div>
         </div>
@@ -153,14 +159,43 @@
 
     <script>
         // Mobile menu toggle (single handler — no inline onclick)
-        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
-            document.querySelector('.nav-links')?.classList.toggle('show');
+        const navLinks = document.querySelector('.nav-links');
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        menuBtn?.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navLinks?.classList.toggle('show');
+        });
+        // Close the mobile menu when a link is tapped
+        navLinks?.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('click', () => navLinks.classList.remove('show'));
+        });
+        // Close the mobile menu when clicking anywhere outside it
+        document.addEventListener('click', function(e) {
+            if (navLinks?.classList.contains('show') && !e.target.closest('.navbar')) {
+                navLinks.classList.remove('show');
+            }
         });
         // Skip link focus
         document.querySelector('.skip-link')?.addEventListener('click', function(e) {
             this.style.top = '10px';
             setTimeout(() => { this.style.top = '-100px'; }, 3000);
         });
+        // Scroll-reveal (progressive enhancement — content never hidden if JS fails)
+        document.documentElement.classList.add('js');
+        const revealEls = document.querySelectorAll('.step-card, .pricing-card, .gallery-item, .testimonial-card, .faq-item');
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            revealEls.forEach(el => io.observe(el));
+        } else {
+            revealEls.forEach(el => el.classList.add('visible'));
+        }
     </script>
     {% block extra_scripts %}{% endblock %}
 </body>

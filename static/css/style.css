@@ -18,7 +18,7 @@
     --off-white: #faf8f6;
     --charcoal: #2d2d2d;
     --text: #4a4a4a;
-    --text-light: #7a7a7a;
+    --text-light: #5f5f5f;
     --rose: #9e6b7e;
     --rose-light: #d4b0c0;
     --shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -26,8 +26,8 @@
     --radius: 12px;
     --radius-lg: 20px;
     --transition: all 0.3s ease;
-    --font-serif: 'Georgia', 'Times New Roman', serif;
-    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
 }
 
 /* --- Reset & Base --- */
@@ -132,21 +132,6 @@ a:hover {
     transform: translateY(-1px);
 }
 
-.nav-cta-outline {
-    background: transparent !important;
-    color: var(--navy) !important;
-    border: 2px solid var(--navy) !important;
-    padding: 0.4rem 1.3rem !important;
-    border-radius: 50px;
-    font-size: 0.85rem !important;
-    font-weight: 600 !important;
-}
-
-.nav-cta-outline:hover {
-    background: var(--navy) !important;
-    color: var(--white) !important;
-}
-
 .mobile-menu-btn {
     display: none;
     background: none;
@@ -158,13 +143,22 @@ a:hover {
 
 /* --- Hero Section --- */
 .hero {
-    min-height: 100vh;
+    min-height: 640px;
     display: flex;
     align-items: center;
     padding: 110px 2rem 80px;
     background: linear-gradient(135deg, var(--cream) 0%, var(--off-white) 50%, var(--cream) 100%);
     position: relative;
     overflow: hidden;
+}
+
+/* Gentle load fade-in for the hero text */
+@keyframes heroFadeIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+.hero-text {
+    animation: heroFadeIn 0.6s ease both;
 }
 
 .hero::before {
@@ -207,7 +201,7 @@ a:hover {
 .hero-badge {
     display: inline-block;
     background: rgba(196,169,125,0.15);
-    color: var(--gold);
+    color: var(--navy);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -272,12 +266,14 @@ a:hover {
 
 .btn-gold {
     background: var(--gold);
-    color: var(--white);
+    color: var(--navy);
+    font-weight: 600;
     box-shadow: 0 4px 15px rgba(196,169,125,0.3);
 }
 
 .btn-gold:hover {
     background: #b89760;
+    color: var(--white);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(196,169,125,0.4);
 }
@@ -296,26 +292,6 @@ a:hover {
     box-shadow: var(--shadow-lg);
     max-width: 400px;
     width: 100%;
-}
-
-.hero-card .mock-slideshow {
-    width: 100%;
-    height: 200px;
-    background: linear-gradient(135deg, var(--sage-light), var(--cream-dark));
-    border-radius: var(--radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.2rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-card .mock-slideshow::after {
-    content: '▶';
-    font-size: 3rem;
-    opacity: 0.5;
-    color: var(--navy);
 }
 
 .hero-photo-strip {
@@ -440,8 +416,32 @@ section {
 
 .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
+    max-width: 860px;
+    margin-inline: auto;
+}
+
+/* Scroll-reveal — content is visible by default, hidden only when .js is set */
+.js .step-card, .js .pricing-card, .js .gallery-item, .js .testimonial-card, .js .faq-item {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.js .visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Keyboard focus visibility (accessibility) */
+a:focus-visible, .btn:focus-visible, button:focus-visible, .faq-item:focus-visible {
+    outline: 3px solid rgba(196,169,125,0.6);
+    outline-offset: 2px;
+}
+
+/* Anchors never hide under the fixed navbar */
+section[id] {
+    scroll-margin-top: 80px;
 }
 
 .pricing-card {
@@ -721,6 +721,14 @@ section {
 
 .gallery-item:hover .gallery-overlay {
     opacity: 1;
+}
+
+/* Touch devices have no hover — always show the overlay label so tiles are discoverable */
+@media (hover: none) {
+    .gallery-overlay {
+        opacity: 1;
+        background: linear-gradient(transparent, rgba(0,0,0,0.65));
+    }
 }
 
 /* Ensure the video fills the tile and is tappable on mobile */
