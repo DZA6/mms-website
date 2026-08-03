@@ -1,0 +1,154 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Dashboard | Memorial Media Services{% endblock %}
+
+{% block extrastyle %}
+<style>
+    .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .dash-card { background: #fff; border: 1px solid #e3e3e3; border-radius: 10px; padding: 1.25rem 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .dash-card .num { font-size: 2rem; font-weight: 700; color: #1a2a3a; line-height: 1.1; }
+    .dash-card .lbl { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.25rem; }
+    .dash-card.warn { border-left: 4px solid #f57f17; }
+    .dash-card.good { border-left: 4px solid #2e7d32; }
+    .dash-card.info { border-left: 4px solid #1976d2; }
+    .dash-card.bad { border-left: 4px solid #c62828; }
+    .dash-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1rem 0; }
+    .dash-panel { background: #fff; border: 1px solid #e3e3e3; border-radius: 10px; padding: 1.25rem 1.5rem; }
+    .dash-panel h3 { margin: 0 0 0.75rem; font-size: 1rem; color: #1a2a3a; }
+    .dash-panel table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .dash-panel td, .dash-panel th { padding: 0.5rem 0.25rem; border-bottom: 1px solid #f0f0f0; text-align: left; }
+    .dash-panel th { color: #888; font-size: 0.75rem; text-transform: uppercase; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; color: #fff; font-size: 0.75rem; }
+    .badge-paid { background: #1976d2; }
+    .badge-processing { background: #7b1fa2; }
+    .badge-completed { background: #2e7d32; }
+    .badge-pending { background: #f57f17; }
+    .empty { color: #aaa; font-style: italic; }
+    @media (max-width: 900px) { .dash-row { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1 style="font-size:1.5rem;margin-bottom:0.25rem;">📊 Business Dashboard</h1>
+    <p style="color:#888;margin-top:0;">At a glance — what needs your attention right now.</p>
+
+    <!-- Stat cards -->
+    <div class="dash-grid">
+        <div class="dash-card bad">
+            <div class="num">${{ stats.paid_revenue|floatformat:0 }}</div>
+            <div class="lbl">💰 Paid Revenue ({{ stats.paid_count }} orders)</div>
+        </div>
+        <div class="dash-card warn">
+            <div class="num">{{ stats.needs_details_count }}</div>
+            <div class="lbl">📝 Paid orders missing details</div>
+        </div>
+        <div class="dash-card info">
+            <div class="num">{{ stats.pending_slideshows_count }}</div>
+            <div class="lbl">⏳ Slideshows to create</div>
+        </div>
+        <div class="dash-card">
+            <div class="num">{{ stats.processing_count }}</div>
+            <div class="lbl">🔧 In production</div>
+        </div>
+        <div class="dash-card good">
+            <div class="num">{{ stats.completed_count }}</div>
+            <div class="lbl">✅ Completed</div>
+        </div>
+        <div class="dash-card">
+            <div class="num">{{ stats.total_revenue|floatformat:0 }}</div>
+            <div class="lbl">📈 Lifetime revenue</div>
+        </div>
+        <div class="dash-card">
+            <div class="num">{{ stats.total_orders }}</div>
+            <div class="lbl">📋 Total orders</div>
+        </div>
+        <div class="dash-card">
+            <div class="num">{{ stats.registered_users }}</div>
+            <div class="lbl">👥 Registered users</div>
+        </div>
+    </div>
+
+    <div class="dash-row">
+        <!-- Needs attention -->
+        <div class="dash-panel">
+            <h3>🚨 Needs Your Attention</h3>
+            {% if needs_details %}
+            <table>
+                <tr><th>Order</th><th>Customer</th><th>Missing</th></tr>
+                {% for o in needs_details %}
+                <tr>
+                    <td><a href="/memorial-admin/main/order/{{ o.id }}/change/">#{{ o.id }}</a></td>
+                    <td>{{ o.user.username }}</td>
+                    <td><span class="badge badge-paid">Deceased details</span></td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p class="empty">All paid orders have their details. 🎉</p>
+            {% endif %}
+        </div>
+
+        <!-- Recent orders -->
+        <div class="dash-panel">
+            <h3>🛒 Recent Orders</h3>
+            {% if recent_orders %}
+            <table>
+                <tr><th>#</th><th>Customer</th><th>Status</th><th>Date</th></tr>
+                {% for o in recent_orders %}
+                <tr>
+                    <td><a href="/memorial-admin/main/order/{{ o.id }}/change/">#{{ o.id }}</a></td>
+                    <td>{{ o.user.username }}</td>
+                    <td><span class="badge badge-{{ o.status }}">{{ o.get_status_display }}</span></td>
+                    <td>{{ o.created_at|date:"M j, H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p class="empty">No orders yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="dash-row">
+        <!-- Pending slideshows -->
+        <div class="dash-panel">
+            <h3>⏳ Slideshows To Create</h3>
+            {% if pending_slideshows %}
+            <table>
+                <tr><th>Title</th><th>Customer</th><th>Created</th></tr>
+                {% for s in pending_slideshows %}
+                <tr>
+                    <td><a href="/memorial-admin/main/slideshow/{{ s.id }}/change/">{{ s.title }}</a></td>
+                    <td>{{ s.user.username }}</td>
+                    <td>{{ s.created_at|date:"M j" }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p class="empty">Nothing waiting — you're caught up! 🎉</p>
+            {% endif %}
+        </div>
+
+        <!-- Recent contacts -->
+        <div class="dash-panel">
+            <h3>📧 Recent Contact Messages</h3>
+            {% if recent_contacts %}
+            <table>
+                <tr><th>Name</th><th>Service</th><th>Date</th></tr>
+                {% for c in recent_contacts %}
+                <tr>
+                    <td><a href="/memorial-admin/main/contactmessage/{{ c.id }}/change/">{{ c.name }}</a></td>
+                    <td>{{ c.service|default:"General" }}</td>
+                    <td>{{ c.created_at|date:"M j, H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p class="empty">No contact messages yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -2,13 +2,14 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from main import views
+from main.admin import admin_site
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('memorial-admin/', admin_site.urls),
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
-    path('memorial-admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('pricing/', views.pricing_page, name='pricing'),
     path('signup/', views.signup, name='signup'),
