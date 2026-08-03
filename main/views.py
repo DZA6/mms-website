@@ -75,16 +75,16 @@ def dashboard(request):
         'orders': orders,
         'slideshows': slideshows,
         'completed_slideshows': completed_slideshows,
-        'MAX_PHOTOS': 100,
+        'MAX_PHOTOS': 50,
     })
 
 
-MAX_PHOTOS = 100
+MAX_PHOTOS = 50
 
 
 @login_required
 def upload_photo(request):
-    """Upload up to 100 photos at once for a tribute slideshow."""
+    """Upload up to 50 photos at once for a tribute slideshow."""
     photo_count = Photo.objects.filter(user=request.user).count()
 
     if request.method == 'POST':

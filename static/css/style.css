@@ -490,6 +490,10 @@ section {
     font-weight: 700;
     color: var(--navy);
     margin: 0.8rem 0;
+    line-height: 1.2; /* Prevent iOS Safari from clipping large text in flex containers */
+    overflow: visible;
+    display: inline-block;
+    width: 100%;
 }
 
 .pricing-card .price span {
@@ -658,10 +662,20 @@ section {
     color: var(--white);
     opacity: 0;
     transition: var(--transition);
+    pointer-events: none; /* Let taps pass through to the video */
 }
 
 .gallery-item:hover .gallery-overlay {
     opacity: 1;
+}
+
+/* Ensure the video fills the tile and is tappable on mobile */
+.gallery-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .gallery-cta {
