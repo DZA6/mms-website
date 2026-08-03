@@ -5,7 +5,7 @@
 <div class="auth-page">
     <div class="auth-card">
         <h1>Welcome Back</h1>
-        <p class="auth-subtitle">Log in to manage your tributes and orders.</p>
+        <p class="auth-subtitle">Log in to continue your tribute. New here? <a href="{% url 'signup' %}">Create an account in 30 seconds</a> to save your order.</p>
         <form method="post">
             {% csrf_token %}
             {% if form.errors %}

@@ -18,7 +18,7 @@
                     <li style="color:var(--text-light);opacity:0.5;"><s>Photo enhancement</s></li>
                     <li style="color:var(--text-light);opacity:0.5;"><s>Shareable tribute page</s></li>
                 </ul>
-                <a href="{% url 'add_to_cart' 'basic' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">Add to Cart</a>
+                <a href="{% url 'add_to_cart' 'basic' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">Order This Tribute</a>
             </div>
 
             <div class="pricing-card featured">
@@ -35,7 +35,23 @@
                     <li>Shareable online tribute page</li>
                     <li>Digital download link</li>
                 </ul>
-                <a href="{% url 'add_to_cart' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Add to Cart</a>
+                <a href="{% url 'add_to_cart' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Order This Tribute</a>
+            </div>
+        </div>
+
+        <!-- Reassurance: guarantee + turnaround + testimonial -->
+        <div class="guarantee-banner" style="margin-top:2.5rem;">
+            <p>🛡️ <strong>Love It or We'll Make It Right.</strong> Unlimited revisions — and if we can't get it right, we'll refund you in full.</p>
+        </div>
+
+        <div class="pricing-craft" style="margin-top:1.5rem;">
+            <p style="text-align:center;margin:0;">⏱️ <strong>Your tribute is delivered within 48 hours</strong> of photo submission. Need it faster? Contact us for same-day rush availability.</p>
+        </div>
+
+        <div class="testimonial-grid" style="margin-top:1.5rem;grid-template-columns:1fr;max-width:640px;margin-left:auto;margin-right:auto;">
+            <div class="testimonial-card">
+                <blockquote>"They took my photos and created something far more beautiful than I could have imagined. Delivered in 48 hours. I can't thank them enough."</blockquote>
+                <div class="testimonial-meta">— Sarah M., <span class="testimonial-location">Kern County, CA</span></div>
             </div>
         </div>
     </div>

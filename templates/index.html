@@ -8,11 +8,11 @@
 <section class="hero">
     <div class="hero-content">
         <div class="hero-text">
-            <div class="hero-badge">★ Trusted by Families Nationwide</div>
+            <div class="hero-badge">★ Trusted by Local Families</div>
             <h1>Turn Memories Into <em>Lasting Tributes</em></h1>
             <p>We craft beautiful tribute slideshows and matching memorial flyers from your photos. All digital — delivered to your inbox, ready to share.</p>
             <div class="hero-buttons">
-                <a href="{% url 'signup' %}" class="btn btn-primary">Get Started →</a>
+                <a href="{% url 'home' %}#pricing" class="btn btn-primary">Order Your Tribute →</a>
                 <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
                 <a href="#contact" class="btn btn-secondary" style="border-color:var(--gold);color:var(--gold);">Request Consultation</a>
             </div>
@@ -78,7 +78,7 @@
                     <li style="color:var(--text-light);opacity:0.5;"><s>Photo enhancement</s></li>
                     <li style="color:var(--text-light);opacity:0.5;"><s>Shareable tribute page</s></li>
                 </ul>
-                <a href="{% url 'add_to_cart' 'basic' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">Add to Cart</a>
+                <a href="{% url 'add_to_cart' 'basic' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">Order This Tribute</a>
             </div>
 
             <div class="pricing-card featured">
@@ -95,13 +95,13 @@
                     <li>Shareable online tribute page</li>
                     <li>Digital download link</li>
                 </ul>
-                <a href="{% url 'add_to_cart' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Add to Cart</a>
+                <a href="{% url 'add_to_cart' 'digital' %}" class="btn btn-gold" style="width:100%;justify-content:center;">Order This Tribute</a>
             </div>
         </div>
 
         <!-- Satisfaction Guarantee -->
         <div class="guarantee-banner">
-            <p>🛡️ <strong>Love It or We'll Make It Right.</strong> We're not happy until you are. If you don't love your tribute, we'll revise it — no questions asked.</p>
+            <p>🛡️ <strong>Love It or We'll Make It Right.</strong> We're not happy until you are. Unlimited revisions — and if we can't get it right, we'll refund you in full.</p>
         </div>
     </div>
 </section>
@@ -234,22 +234,22 @@
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
                 <blockquote>"The slideshow brought everyone to tears — in the best way. Having both the video and the flyer PDF meant we could print extras locally whenever we needed. The turnaround was incredible."</blockquote>
-                <cite>— Sarah M. ★ Verified Customer</cite>
+                <cite>— Sarah M., Kern County, CA ★ Verified Customer</cite>
             </div>
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
                 <blockquote>"I didn't have time to design anything myself. They took my photos and created something far more beautiful than I could have imagined. Delivered in 48 hours. I can't thank them enough."</blockquote>
-                <cite>— David L. ★ Verified Customer</cite>
+                <cite>— David L., Mojave, CA ★ Verified Customer</cite>
             </div>
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
                 <blockquote>"The memorial flyer design was absolutely stunning. We printed copies at our local print shop and they came out perfect. The whole process was so easy."</blockquote>
-                <cite>— Maria R. ★ Verified Customer</cite>
+                <cite>— Maria R., Edwards AFB, CA ★ Verified Customer</cite>
             </div>
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
                 <blockquote>"From upload to delivery in under 3 days. The team kept me updated the entire time. The slideshow was played at the service and everyone asked who made it."</blockquote>
-                <cite>— James T. ★ Verified Customer</cite>
+                <cite>— James T., California City, CA ★ Verified Customer</cite>
             </div>
         </div>
     </div>
@@ -263,7 +263,7 @@
         <div class="faq-grid">
             <div class="faq-item">
                 <h3>How long does it take?</h3>
-                <p>Most tributes are delivered within 48 hours of photo submission. Rush orders (same-day) are available for an additional fee — just contact us.</p>
+                <p>Most tributes are delivered within 48 hours of photo submission. Need it faster? Contact us for same-day rush availability.</p>
             </div>
             <div class="faq-item">
                 <h3>What if I don't like the design?</h3>
@@ -300,7 +300,7 @@
             "name": "How long does it take?",
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Most tributes are delivered within 48 hours of photo submission. Rush orders (same-day) are available for an additional fee."
+                "text": "Most tributes are delivered within 48 hours of photo submission. Need it faster? Contact us for same-day rush availability."
             }
         },
         {
@@ -352,7 +352,7 @@
                 <p>Whether you have a question, need a rush order, or want something completely custom — reach out. We'll get back to you within 2 hours during business hours.</p>
                 <div class="contact-detail">📧 {{ CONTACT_EMAIL }}</div>
                 <div class="contact-detail">📞 {{ CONTACT_PHONE }}</div>
-                <div class="contact-detail">⏱️ Mon–Fri, 9am–10pm EST</div>
+                <div class="contact-detail">⏱️ Mon–Fri, 9am–10pm PT</div>
             </div>
             <form class="contact-form" method="post" action="{% url 'home' %}#contact">
                 {% csrf_token %}

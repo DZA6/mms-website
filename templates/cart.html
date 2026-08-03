@@ -47,8 +47,9 @@
         <form method="post" action="{% url 'checkout_cart' %}">
             {% csrf_token %}
             <button type="submit" class="submit-btn" style="margin-top:1.5rem;width:100%;">
-                Proceed to Checkout →
+                Secure Checkout →
             </button>
+            <p style="text-align:center;font-size:0.8rem;color:var(--text-light);margin-top:0.6rem;">🔒 Secure checkout — powered by Stripe · 48-hour delivery · Unlimited revisions</p>
         </form>
         {% else %}
         <div style="text-align:center;padding:3rem 1rem;">
