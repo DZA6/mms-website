@@ -1,0 +1,60 @@
+# MMS Auto-Pull — Scheduled Task Setup
+
+Keeps the live site on the latest GitHub build **every 4 hours** — no manual
+`git pull` needed.
+
+## How it works
+
+Every 4 hours, a task checks GitHub for new commits on `main`:
+- **Nothing new** → stays quiet (no messages, no spam)
+- **New build found** → `git pull --ff-only` + applies migrations + collects
+  static files → you get a notification with what changed
+
+## Setup on PythonAnywhere (the live site)
+
+PythonAnywhere **Scheduled Tasks** run cron jobs on their servers. To make the
+live site auto-pull every 4 hours:
+
+### 1. Tasks tab → Scheduled
+
+- PythonAnywhere dashboard → **Tasks** tab
+- **Scheduled tasks** section
+- Fill in:
+  - **Command:**
+    ```
+    cd ~/mms-website && git pull --ff-only origin main && python manage.py migrate --noinput && python manage.py collectstatic --noinput
+    ```
+    (adjust `~/mms-website` if your site dir has a different path — check the
+    Web tab's "Source code" setting)
+  - **Time:** PythonAnywhere lets you schedule at specific hours. Add **six
+    tasks** (or use their "every N hours" option if available on your plan):
+    - 12:00 AM, 4:00 AM, 8:00 AM, 12:00 PM, 4:00 PM, 8:00 PM
+    - If your plan supports cron syntax, one task with `0 */4 * * *` does it all
+
+### 2. Reload the web app (required after code changes)
+
+Scheduled tasks update the files, but PythonAnywhere serves the old code until
+you **Reload** the web app. Two options:
+- **Manual:** click Reload on the Web tab after each pull (defeats the purpose)
+- **Automated (recommended):** use the PythonAnywhere API to reload after pull.
+  Get an API token from **Account → API token**, then the command becomes:
+  ```
+  cd ~/mms-website && git pull --ff-only origin main && python manage.py migrate --noinput && python manage.py collectstatic --noinput && curl -X POST -H "Authorization: Token YOUR_API_TOKEN" https://www.pythonanywhere.com/api/v0/user/YOUR_USERNAME/webapps/YOUR_DOMAIN/reload/
+  ```
+
+### 3. Verify it works
+
+After setting up, push a test commit to GitHub (or just edit a file on the
+site) and confirm the next scheduled run picks it up. Check the **Tasks tab
+logs** to see each run's output.
+
+## Local dev machine (this PC)
+
+Already configured: a scheduled task runs every 4 hours locally
+(`auto_pull_site.py`), silently keeping the dev copy in sync. It messages you
+in Signal only when a new build actually arrives.
+
+---
+
+**One-time cleanup on PythonAnywhere:** if you previously created the
+always-on deploy worker task, delete it — the scheduled task above replaces it.
