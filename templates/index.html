@@ -4,31 +4,40 @@
 {% block title %}Memorial Media Services — Beautiful Tribute Slideshows & Flyers{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <div class="hero-text">
+<!-- Hero Section — centered autoplay video -->
+<section class="hero hero-center">
+    <div class="hero-content hero-content-center">
+        <div class="hero-text hero-text-center">
             <div class="hero-badge">★ Trusted by Local Families</div>
             <h1>Cherished Moments, <em>Beautifully Remembered</em></h1>
             <p>When a life ends, the memories remain — in the photos you hold dear. Let us turn them into a gentle tribute slideshow and a memorial flyer your family will treasure, delivered right to your inbox.</p>
-            <div class="hero-buttons">
+            <div class="hero-buttons hero-buttons-center">
                 <a href="{% url 'home' %}#pricing" class="btn btn-primary">Begin Your Tribute →</a>
                 <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
                 <a href="#contact" class="btn btn-secondary" style="border-color:var(--gold);color:var(--gold);">Request Consultation</a>
             </div>
-            <div class="hero-trust" style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);font-weight:600;">
+            <div class="hero-trust" style="display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;margin-top:1.5rem;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);font-weight:600;">
                 <span>★★★★★ 4.9 from Local Families</span>
                 <span>🕊️ 48-Hour Delivery</span>
                 <span>♾️ Unlimited Revisions, Always</span>
             </div>
         </div>
-        <div class="hero-visual">
-            <div class="hero-card hero-card-video">
-                <video class="hero-video" controls playsinline preload="metadata"
-                    poster="{% static 'samples/videos/mms_intro_poster.jpg' %}">
-                    <source src="{{ MEDIA_URL }}videos/mms_intro.mp4" type="video/mp4">
+
+        <!-- The hero video — centered, autoplay, loop, muted (browser requirement) -->
+        <div class="hero-video-stage">
+            <div class="hero-video-wrap">
+                <video id="hero-video" class="hero-video" autoplay muted loop playsinline
+                    poster="{% static 'samples/videos/header_video_poster.jpg' %}">
+                    <source src="{{ MEDIA_URL }}videos/header_video_web.mp4" type="video/mp4">
                     Your browser doesn't support video playback.
                 </video>
+                <!-- Sound toggle: browsers block autoplay WITH sound, so we start muted -->
+                <button id="hero-sound-btn" class="hero-sound-btn" type="button" aria-label="Enable video sound">
+                    <span class="hero-sound-off">🔇 Tap for Sound</span>
+                    <span class="hero-sound-on" style="display:none;">🔊 Sound On</span>
+                </button>
+            </div>
+            <div class="hero-video-caption">
                 <div class="mock-rating">★★★★★</div>
                 <h3>A Glimpse of What We Create</h3>
                 <p>Every tribute is crafted by hand, with patience and heart — and delivered in as little as 48 hours.</p>
@@ -396,5 +405,31 @@
             item.classList.toggle('active');
         });
     });
+</script>
+
+<!-- Hero video: sound toggle (autoplay must start muted per browser rules) -->
+<script>
+    (function() {
+        const video = document.getElementById('hero-video');
+        const btn = document.getElementById('hero-sound-btn');
+        if (!video || !btn) return;
+
+        // Keep it looping even if the browser interrupts autoplay
+        video.addEventListener('pause', () => {
+            if (video.dataset.userPaused !== 'true') video.play().catch(() => {});
+        });
+
+        btn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            if (!video.muted) {
+                video.play().catch(() => {});
+                btn.querySelector('.hero-sound-off').style.display = 'none';
+                btn.querySelector('.hero-sound-on').style.display = 'inline';
+            } else {
+                btn.querySelector('.hero-sound-off').style.display = 'inline';
+                btn.querySelector('.hero-sound-on').style.display = 'none';
+            }
+        });
+    })();
 </script>
 {% endblock %}
