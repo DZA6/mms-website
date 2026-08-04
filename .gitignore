@@ -38,3 +38,4 @@ Thumbs.db
 
 # Environment (keep secrets out of git)
 .env
+.deploy_state.json
