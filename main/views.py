@@ -22,6 +22,11 @@ def robots_txt(request):
     )
 
 
+def privacy_policy(request):
+    """Privacy policy + cookie disclosure (CCPA/CPRA)."""
+    return render(request, 'privacy.html')
+
+
 def sitemap_xml(request):
     """Minimal sitemap for the public pages."""
     domain = "https://www.memorialmediaservices.org"
