@@ -9,8 +9,8 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import BulkPhotoForm
-from .models import Photo, Order, SlideShow, ContactMessage, Cart, CartItem
+from .forms import BulkPhotoForm, BusinessMediaForm
+from .models import Photo, Order, SlideShow, ContactMessage, Cart, CartItem, Video, BusinessProfile
 from .email_helper import send_order_email
 
 
@@ -587,3 +587,139 @@ def checkout_cart(request):
         'total': cart.total_cents(),
         'stripe_key': settings.STRIPE_PUBLISHABLE_KEY,
     })
+
+
+# =====================================================================
+# BUSINESS PORTAL — partner businesses (funeral homes, photographers)
+# upload/download media on behalf of customers.
+# =====================================================================
+
+def _get_business(user):
+    """Return the user's approved BusinessProfile, or None."""
+    if not user.is_authenticated:
+        return None
+    try:
+        bp = user.business_profile
+        return bp if bp.is_approved else None
+    except BusinessProfile.DoesNotExist:
+        return None
+
+
+def business_portal(request):
+    """Landing page for the business portal — public, explains access."""
+    bp = _get_business(request.user) if request.user.is_authenticated else None
+    return render(request, 'business/portal.html', {'business': bp})
+
+
+@login_required
+def business_dashboard(request):
+    """Partner dashboard: list assigned orders, upload media, download."""
+    bp = _get_business(request.user)
+    if not bp:
+        messages.error(request, "Your business account isn't approved yet. Contact us.")
+        return redirect('business_portal')
+
+    orders = Order.objects.filter(assigned_business=bp).order_by('-created_at')
+
+    # Build the per-order media form (limit to this business's orders)
+    form = BusinessMediaForm(auto_id=False)
+    form.fields['order'].queryset = orders
+
+    if request.method == 'POST':
+        form = BusinessMediaForm(request.POST, request.FILES)
+        form.fields['order'].queryset = orders
+        if form.is_valid():
+            order = form.cleaned_data['order']
+            photo_title = form.cleaned_data.get('photo_title') or f"Photos for order #{order.id}"
+            video_title = form.cleaned_data.get('video_title') or f"Videos for order #{order.id}"
+            saved_photos = 0
+            saved_videos = 0
+
+            # Photos
+            for f in form.cleaned_data.get('images') or []:
+                Photo.objects.create(
+                    user=order.user, order=order, business=bp,
+                    title=photo_title, image=f,
+                )
+                saved_photos += 1
+
+            # Videos
+            for f in form.cleaned_data.get('videos') or []:
+                Video.objects.create(
+                    user=order.user, order=order, business=bp,
+                    title=video_title, video_file=f,
+                )
+                saved_videos += 1
+
+            if saved_photos or saved_videos:
+                messages.success(
+                    request,
+                    f"Uploaded {saved_photos} photo(s) and {saved_videos} video(s) to order #{order.id}."
+                )
+                send_business_upload_notice(order, bp, saved_photos, saved_videos)
+            return redirect('business_dashboard')
+
+    # Per-order media counts for the dashboard table
+    order_stats = []
+    for o in orders:
+        order_stats.append({
+            'order': o,
+            'photo_count': o.photos.count(),
+            'video_count': o.videos.count(),
+        })
+
+    return render(request, 'business/dashboard.html', {
+        'business': bp,
+        'order_stats': order_stats,
+        'form': form,
+    })
+
+
+def send_business_upload_notice(order, business, n_photos, n_videos):
+    """Email the owner when a partner uploads media to an order."""
+    try:
+        from .email_helper import send_simple_email
+        subject = f"📸 Partner upload: order #{order.id}"
+        body = (
+            f"{business.business_name} uploaded {n_photos} photo(s) and "
+            f"{n_videos} video(s) to order #{order.id} "
+            f"(customer: {order.user.username}, tier: {order.get_tier_display()})."
+        )
+        send_simple_email(settings.OWNER_EMAIL, subject, body)
+    except Exception:
+        pass  # non-blocking; the upload itself already succeeded
+
+
+@login_required
+def business_download_order(request, order_id):
+    """Download all photos + videos for an order as a ZIP."""
+    bp = _get_business(request.user)
+    if not bp:
+        messages.error(request, "Business access required.")
+        return redirect('business_portal')
+
+    order = get_object_or_404(Order, id=order_id, assigned_business=bp)
+
+    import io
+    import zipfile
+
+    buffer = io.BytesIO()
+    safe_name = "".join(c for c in f"order_{order.id}" if c.isalnum() or c in "._-")
+    with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for i, ph in enumerate(order.photos.all(), 1):
+            if ph.image:
+                try:
+                    zf.write(ph.image.path, arcname=f"photos/{i:02d}_{Path(ph.image.name).name}")
+                except FileNotFoundError:
+                    continue
+        for i, v in enumerate(order.videos.all(), 1):
+            if v.video_file:
+                try:
+                    zf.write(v.video_file.path, arcname=f"videos/{i:02d}_{Path(v.video_file.name).name}")
+                except FileNotFoundError:
+                    continue
+
+    buffer.seek(0)
+    resp = HttpResponse(buffer.getvalue(), content_type='application/zip')
+    resp['Content-Disposition'] = f'attachment; filename="{safe_name}_media.zip"'
+    return resp

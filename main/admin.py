@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import path
 from django.utils.html import format_html
-from .models import Photo, Order, SlideShow, ContactMessage, Cart, CartItem
+from .models import Photo, Order, SlideShow, ContactMessage, Cart, CartItem, Video, BusinessProfile
 
 # Brand the admin
 admin.site.site_header = 'Memorial Media Services'
@@ -265,3 +265,5 @@ admin_site.register(SlideShow, SlideShowAdmin)
 admin_site.register(ContactMessage, ContactMessageAdmin)
 admin_site.register(Cart, CartAdmin)
 admin_site.register(CartItem, CartItemAdmin)
+admin_site.register(BusinessProfile)
+admin_site.register(Video)

@@ -38,3 +38,29 @@ class BulkPhotoForm(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': "e.g. Mom's Celebration of Life"})
     )
     images = MultipleFileField(label='Photos')
+
+
+class BusinessMediaForm(forms.Form):
+    """Business portal upload: photos + videos attached to a specific order."""
+    order = forms.ModelChoiceField(
+        queryset=None,  # set per-request in the view
+        label="Customer Order",
+        empty_label="— Select the order —",
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+    photo_title = forms.CharField(
+        max_length=100, required=False,
+        widget=forms.TextInput(attrs={'placeholder': "e.g. Smith Family Photos"}),
+    )
+    images = MultipleFileField(label='Photos', required=False)
+    video_title = forms.CharField(
+        max_length=200, required=False,
+        widget=forms.TextInput(attrs={'placeholder': "e.g. Interview footage"}),
+    )
+    videos = MultipleFileField(label='Videos', required=False)
+
+    def clean(self):
+        cleaned = super().clean()
+        if not cleaned.get('images') and not cleaned.get('videos'):
+            raise forms.ValidationError("Upload at least one photo or one video.")
+        return cleaned

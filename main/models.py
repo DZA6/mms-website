@@ -2,13 +2,48 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Photo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='photos')
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='client_slideshows/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    # Business portal: photos can be attached to a specific order and
+    # uploaded by a business partner (funeral home / photographer) on
+    # behalf of the customer.
+    order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True, blank=True,
+                              related_name='photos')
+    business = models.ForeignKey('BusinessProfile', on_delete=models.SET_NULL, null=True,
+                                 blank=True, related_name='uploaded_photos')
+
+    def __str__(self):
+        return self.title
+
+
+class Video(models.Model):
+    """Raw video upload — customer or business-supplied footage for a tribute."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='videos')
+    order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True, blank=True,
+                              related_name='videos')
+    business = models.ForeignKey('BusinessProfile', on_delete=models.SET_NULL, null=True,
+                                 blank=True, related_name='uploaded_videos')
+    title = models.CharField(max_length=200)
+    video_file = models.FileField(upload_to='client_videos/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
+
+
+class BusinessProfile(models.Model):
+    """A partner business (funeral home, photographer, hospice) that can
+    upload/download media on behalf of customers."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='business_profile')
+    business_name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=50, blank=True)
+    is_approved = models.BooleanField(default=False, help_text="Approved partners can access the portal")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.business_name} ({self.user.username})"
 
 
 class Order(models.Model):
@@ -30,6 +65,9 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     stripe_payment_intent = models.CharField(max_length=255, blank=True)
     notes = models.TextField(blank=True)
+    # Business portal: which partner is handling this order's media
+    assigned_business = models.ForeignKey('BusinessProfile', on_delete=models.SET_NULL,
+                                          null=True, blank=True, related_name='assigned_orders')
 
     # Shipping address (for print orders)
     shipping_name = models.CharField(max_length=200, blank=True)

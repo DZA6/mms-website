@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Business Portal — Memorial Media Services{% endblock %}
+{% block meta_desc %}Partner portal for funeral homes, photographers, and care providers to upload and download tribute media on behalf of families.{% endblock %}
+
+{% block content %}
+<section style="padding:120px 1rem 4rem;background:var(--off-white);min-height:75vh;">
+    <div class="container" style="max-width:760px;">
+        <h1 style="font-family:var(--font-serif);color:var(--navy);margin-bottom:1rem;">Business Portal</h1>
+        <p style="color:var(--text-light);margin-bottom:2.5rem;">A private workspace for our partner funeral homes, photographers, and care providers to upload photos and videos on behalf of the families we serve — and download finished media.</p>
+
+        {% if user.is_authenticated %}
+            {% if business %}
+                <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:1.75rem;margin-bottom:1.5rem;">
+                    <h3 style="font-family:var(--font-serif);color:var(--navy);margin-bottom:.5rem;">Welcome, {{ business.business_name }}</h3>
+                    <p style="color:var(--text-light);margin-bottom:1.25rem;">You're signed in as an approved partner.</p>
+                    <a href="{% url 'business_dashboard' %}" class="btn btn-primary">Open Dashboard →</a>
+                </div>
+            {% else %}
+                <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:1.75rem;margin-bottom:1.5rem;">
+                    <h3 style="font-family:var(--font-serif);color:var(--navy);margin-bottom:.5rem;">Account Not Approved</h3>
+                    <p style="color:var(--text-light);">Your business account is pending review. Contact us at
+                    <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a> and we'll activate your access.</p>
+                </div>
+            {% endif %}
+        {% else %}
+            <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:1.75rem;margin-bottom:1.5rem;">
+                <h3 style="font-family:var(--font-serif);color:var(--navy);margin-bottom:.5rem;">Partner Access</h3>
+                <p style="color:var(--text-light);margin-bottom:1.25rem;">Sign in with your partner account to manage media for your assigned orders.</p>
+                <a href="{% url 'login' %}?next={% url 'business_dashboard' %}" class="btn btn-primary">Partner Sign In</a>
+            </div>
+        {% endif %}
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.5rem;">
+            <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:1.25rem;">
+                <h4 style="color:var(--navy);margin-bottom:.4rem;">📤 Upload</h4>
+                <p style="color:var(--text-light);font-size:.95rem;">Add photos and videos to a customer's order on their behalf.</p>
+            </div>
+            <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:1.25rem;">
+                <h4 style="color:var(--navy);margin-bottom:.4rem;">📥 Download</h4>
+                <p style="color:var(--text-light);font-size:.95rem;">Download all media for an order as one ZIP file.</p>
+            </div>
+            <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:1.25rem;">
+                <h4 style="color:var(--navy);margin-bottom:.4rem;">🤝 For Partners</h4>
+                <p style="color:var(--text-light);font-size:.95rem;">Funeral homes, photographers, and hospice teams. Want access?
+                <a href="mailto:{{ CONTACT_EMAIL }}">Email us</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

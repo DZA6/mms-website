@@ -350,3 +350,12 @@ Memorial Media Services — You're doing great work.
     _log_alert('owner_gmail', order.id, 'FAILED: %s' % err1)
     _log_alert('owner_smtp', order.id, 'FAILED: %s' % err2)
     return False, f'Both channels failed. Gmail: {err1} | SMTP: {err2}'
+
+
+def send_simple_email(to_email, subject, body_text):
+    """One-off plain-text email via the dual-channel helper (Gmail API -> SMTP)."""
+    msg = MIMEMultipart('alternative')
+    msg['To'] = to_email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body_text, 'plain'))
+    return _send_via_gmail(msg)

@@ -12,6 +12,10 @@ urlpatterns = [
     path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
     path('privacy/', views.privacy_policy, name='privacy_policy'),
     path('terms/', views.terms_and_conditions, name='terms'),
+    # Business portal
+    path('business/', views.business_portal, name='business_portal'),
+    path('business/dashboard/', views.business_dashboard, name='business_dashboard'),
+    path('business/order/<int:order_id>/download/', views.business_download_order, name='business_download_order'),
     path('', views.home, name='home'),
     path('pricing/', views.pricing_page, name='pricing'),
     path('signup/', views.signup, name='signup'),
