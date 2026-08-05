@@ -27,10 +27,15 @@ def privacy_policy(request):
     return render(request, 'privacy.html')
 
 
+def terms_and_conditions(request):
+    """Terms & conditions page (shown at checkout with required agreement)."""
+    return render(request, 'terms.html')
+
+
 def sitemap_xml(request):
     """Minimal sitemap for the public pages."""
     domain = "https://www.memorialmediaservices.org"
-    urls = ["", "pricing/", "login/", "signup/"]
+    urls = ["", "pricing/", "login/", "signup/", "privacy/", "terms/"]
     entries = "".join(
         f"<url><loc>{domain}/{u}</loc><changefreq>weekly</changefreq></url>"
         for u in urls
@@ -511,6 +516,16 @@ def checkout_cart(request):
         return redirect('pricing')
 
     if request.method == 'POST':
+        # Terms agreement is a hard requirement — enforce server-side too
+        # (the HTML `required` attribute only stops well-behaved browsers).
+        if not request.POST.get('agree_terms'):
+            messages.error(
+                request,
+                'Please read and accept the Terms & Conditions and Privacy Policy '
+                'before checking out.',
+            )
+            return redirect('view_cart')
+
         # Create a single Stripe Checkout Session with line items for each cart item
         line_items = []
         orders = []

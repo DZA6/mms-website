@@ -38,7 +38,11 @@
 
         <form method="post" action="{% url 'checkout_cart' %}">
             {% csrf_token %}
-            <button type="submit" class="submit-btn" style="margin-top:1.5rem;width:100%;">
+            <label style="display:flex;gap:0.6rem;align-items:flex-start;margin-top:1.2rem;font-size:0.85rem;color:var(--text);cursor:pointer;">
+                <input type="checkbox" name="agree_terms" required style="margin-top:0.15rem;width:auto;flex-shrink:0;">
+                <span>I have read and agree to the <a href="{% url 'terms' %}" target="_blank" style="color:var(--gold);text-decoration:underline;">Terms &amp; Conditions</a> and <a href="{% url 'privacy_policy' %}" target="_blank" style="color:var(--gold);text-decoration:underline;">Privacy Policy</a>. My order is subject to the revision, refund, and delivery terms described there.</span>
+            </label>
+            <button type="submit" class="submit-btn" style="margin-top:1rem;width:100%;">
                 Secure Checkout →
             </button>
             <p style="text-align:center;font-size:0.8rem;color:var(--text-light);margin-top:0.6rem;">🔒 Secure checkout — powered by Stripe · 48-hour delivery · Unlimited revisions</p>

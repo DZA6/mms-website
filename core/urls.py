@@ -11,6 +11,7 @@ urlpatterns = [
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
     path('privacy/', views.privacy_policy, name='privacy_policy'),
+    path('terms/', views.terms_and_conditions, name='terms'),
     path('', views.home, name='home'),
     path('pricing/', views.pricing_page, name='pricing'),
     path('signup/', views.signup, name='signup'),
