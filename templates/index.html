@@ -77,7 +77,6 @@
         <h2 class="section-title">Simple, Honest Pricing</h2>
         <p class="section-subtitle">No hidden fees, no subscriptions — just beautiful work and unlimited revisions.</p>
         <div class="pricing-craft">
-            <img src="{% static 'samples/people/person_computer.jpg' %}" alt="Designer crafting a tribute slideshow on a computer" loading="lazy">
             <p>Every order is hand-crafted by a real designer — reviewed frame by frame, not auto-generated.</p>
         </div>
         <div class="pricing-grid">
@@ -128,7 +127,7 @@
         <div class="gallery-grid">
             <div class="gallery-item">
                 <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="none"
-                    poster="{% static 'images/mms-logo.png' %}"
+                    poster="{% static 'samples/videos/promo_poster.jpg' %}"
                     onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;">
                     <source src="{{ MEDIA_URL }}videos/promo.mp4" type="video/mp4">
                 </video>
@@ -230,15 +229,7 @@
     </div>
 </section>
 
-<!-- Workplace photo band (visual only) -->
-<section class="workplace-band" aria-hidden="true">
-    <div class="workplace-band-grid">
-        <img src="{% static 'samples/team/team_meeting.jpg' %}" alt="" loading="lazy">
-        <img src="{% static 'samples/team/team_collab.jpg' %}" alt="" loading="lazy">
-        <img src="{% static 'samples/team/office_desk.jpg' %}" alt="" loading="lazy">
-        <img src="{% static 'samples/team/creative_team.jpg' %}" alt="" loading="lazy">
-    </div>
-</section>
+<!-- Workplace photo band removed (stock images) -->
 
 <!-- Testimonials -->
 <section class="testimonials">
